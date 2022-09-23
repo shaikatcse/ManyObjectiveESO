@@ -1,4 +1,4 @@
-package reet.fbk.eu.OptimizeEnergyPLANCIVIS.ParseFile;
+package EnergySystems.GiudicarieEsteriori.ParseFile;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;

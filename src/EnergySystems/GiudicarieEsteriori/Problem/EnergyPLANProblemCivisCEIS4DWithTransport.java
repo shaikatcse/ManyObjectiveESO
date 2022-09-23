@@ -1,4 +1,4 @@
-package reet.fbk.eu.OptimizeEnergyPLANCIVIS.CEIS.Problem;
+package EnergySystems.GiudicarieEsteriori.Problem;
 
 import jmetal.core.Problem;
 import jmetal.core.Solution;
@@ -16,12 +16,13 @@ import java.util.Iterator;
 
 import org.apache.commons.collections.MultiMap;
 
-import reet.fbk.eu.OptimizeEnergyPLANCIVIS.ParseFile.*;
+import EnergySystems.EnergySystemOptimizationProblem;
+import EnergySystems.GiudicarieEsteriori.ParseFile.EnergyPLANFileParseForCivis;
 
 /*
  * This is a problem file that is dealing with Transport (mainly introduction of electric cars)
  */
-public class EnergyPLANProblemCivisCEIS4DWithTransport extends Problem {
+public class EnergyPLANProblemCivisCEIS4DWithTransport extends EnergySystemOptimizationProblem {
 
 	MultiMap energyplanmMap;
 
