@@ -171,7 +171,7 @@ public class MaOOCEIS4D extends EnergySystemOptimizationProblem {
 		FileWriter fw = new FileWriter(modifiedInput.getAbsoluteFile());
 		BufferedWriter modifiedInputbw = new BufferedWriter(fw);
 	
-		String path = "\"\\\".\\\\src\\\\reet\\\\fbk\\\\eu\\\\OptimizeEnergyPLANCIVIS\\\\CEIS\\\\data\\\\CEIS_Complete_Current.txt\\";
+		String path = ".\\src\\EnergySystems\\GiudicarieEsteriori\\data\\CEIS_Complete_Current.txt";
 	
 
 		BufferedReader mainInputbr = new BufferedReader(new InputStreamReader(new FileInputStream(path), "UTF-16"));
@@ -245,7 +245,7 @@ public class MaOOCEIS4D extends EnergySystemOptimizationProblem {
 									};
 		String cooresPondingValues[] = new String[modifiedParameters.length];
 		int index = 0;
-		cooresPondingValues[index] = "" + pv;
+		cooresPondingValues[index++] = "" + pv;
 		cooresPondingValues[index++] = "" + oilBoilerHeatPercentage * totalHeatDemand / oilBoilerEfficiency;
 		cooresPondingValues[index++] =""+ LPGBoilerHeatPercentage * totalHeatDemand / ngasBoilerEfficiency;
 		cooresPondingValues[index++] ="" + biomassBoilerHeatPercentage * totalHeatDemand / biomassBoilerEfficiency;
@@ -254,7 +254,7 @@ public class MaOOCEIS4D extends EnergySystemOptimizationProblem {
 		cooresPondingValues[index++] ="" + elecCarElectricityDemandInGWh;
 		cooresPondingValues[index++] =""+reducedDieselDemandInGWh;
 		cooresPondingValues[index++] =""+reducedPetrolDemandInGWh;
-		cooresPondingValues[index++] = "CIVIS_Transport_NC.txt";
+		cooresPondingValues[index] = "CIVIS_Transport_NC.txt";
 		
 		String line;
 		while ((line = mainInputbr.readLine()) != null) {
@@ -347,49 +347,46 @@ public void extractInformation(Solution solution, MultiMap modifyMap, int serial
 		solution.setObjective(0, Double.parseDouble(it.next().toString()));
 		// objective # 2
 		col = (Collection<String>) energyplanmMap
-				.get("Total variable costs");
+				.get("Variable costs");
+		              
 		it = col.iterator();
 		String totalVariableCostStr = it.next().toString();
-		totalVariableCostStr = totalVariableCostStr.substring(0,
-				totalVariableCostStr.lastIndexOf("1000"));
-		double totalVariableCost = Double.parseDouble(totalVariableCostStr);
+			double totalVariableCost = Double.parseDouble(totalVariableCostStr);
 
 		col = (Collection<String>) energyplanmMap
 				.get("Fixed operation costs");
 		it = col.iterator();
 		String fixedOperationalCostStr = it.next().toString();
-		fixedOperationalCostStr = fixedOperationalCostStr.substring(0,
-				fixedOperationalCostStr.lastIndexOf("1000"));
 		double fixedOperationalCost = Double
 				.parseDouble(fixedOperationalCostStr);
 
-		col = (Collection<String>) energyplanmMap.get("AnnualHydropower");
+		col = (Collection<String>) energyplanmMap.get("AnnualHydroElectr.");
 		it = col.iterator();
 		double hydroPowerProduction = Double.parseDouble(it.next()
 				.toString());
 		// extract anual PV production
-		col = (Collection<String>) energyplanmMap.get("AnnualPV");
+		col = (Collection<String>) energyplanmMap.get("AnnualPVElectr.");
 		it = col.iterator();
 		double PVproduction = Double.parseDouble(it.next().toString());
 		
 		//extract biogas production (it is named as wave power)
-		col = (Collection<String>) energyplanmMap.get("AnnualWavepower");
+		col = (Collection<String>) energyplanmMap.get("AnnualWaveElectr.");
 		it = col.iterator();
 		double BiogasElecProduction = Double.parseDouble(it.next()
 				.toString());
 
 		// extract annual import
-		col = (Collection<String>) energyplanmMap.get("Annualimport");
+		col = (Collection<String>) energyplanmMap.get("AnnualImportElectr.");
 		it = col.iterator();
 		double Import = Double.parseDouble(it.next().toString());
 
 		// extract annual export
-		col = (Collection<String>) energyplanmMap.get("Annualexport");
+		col = (Collection<String>) energyplanmMap.get("AnnualExportElectr.");
 		it = col.iterator();
 		double Export = Double.parseDouble(it.next().toString());
 
 		//extract biomass CHP electricity production
-		col = (Collection<String>) energyplanmMap.get("AnnualHH-elec.CHP");
+		col = (Collection<String>) energyplanmMap.get("AnnualHH-CHPElectr.");
 		it = col.iterator();
 		double biomassCHPElecProduction = Double.parseDouble(it.next().toString());
 
@@ -479,9 +476,7 @@ public void extractInformation(Solution solution, MultiMap modifyMap, int serial
 				.get("Annual Investment costs");
 		it = col.iterator();
 		String invest = it.next().toString();
-		String investmentCostStr = invest.substring(0,
-				invest.lastIndexOf("1000"));
-		double investmentCost = Double.parseDouble(investmentCostStr);
+		double investmentCost = Double.parseDouble(invest);
 		double realInvestmentCost = investmentCost
 				- reductionInvestmentCost + geoBoreHoleInvestmentCost;
 
@@ -498,17 +493,17 @@ public void extractInformation(Solution solution, MultiMap modifyMap, int serial
 		//3rd objective
 		//Trasportation
 		col = (Collection<String>) energyplanmMap
-				.get("Annualflexibleeldemand");
+				.get("AnnualFlexibleElectr.");
 		it = col.iterator();
 		double transportElecDemand = Double.parseDouble(it.next().toString());
 		
 		
-		col = (Collection<String>) energyplanmMap.get("Annualelec.demand");
+		col = (Collection<String>) energyplanmMap.get("AnnualElectr.Demand");
 		it = col.iterator();
 		double annualElecDemand = Double.parseDouble(it.next().toString());
 
 		//Individual house HP electric demand
-		col = (Collection<String>) energyplanmMap.get("AnnualHH-elec.HP");
+		col = (Collection<String>) energyplanmMap.get("AnnualHH-HPElectr.");
 		it = col.iterator();
 		double annualHPdemand = Double.parseDouble(it.next().toString());
 		
@@ -572,52 +567,10 @@ public void extractInformation(Solution solution, MultiMap modifyMap, int serial
 
 		
 		
-public void simulateAllScenarios(int numberOfScenarios) {
-		
-		String runSpoolEnergyPLAN = ".\\EnergyPLAN161\\EnergyPLAN.exe -spool "+numberOfScenarios+ "  ";
-		for(int i=0;i<numberOfScenarios;i++) {
-			runSpoolEnergyPLAN = runSpoolEnergyPLAN + "modifiedInput"+i+".txt ";
-		}
-		runSpoolEnergyPLAN = runSpoolEnergyPLAN + "-ascii run";
-		
-			
-		try {
-			Process process = Runtime.getRuntime().exec(runSpoolEnergyPLAN);
-			process.waitFor();
-			process.destroy();
-
-		} catch (IOException e) {
-			System.out.println("Energyplan.exe has some problem");
-			e.printStackTrace();
-		} catch (InterruptedException e) {
-			System.out.println("Energyplan interrupted");
-		}
-		
-	}
 
 
-public void evaluateAll(SolutionSet solutionSet) throws JMException {
-	
-	ArrayList<MultiMap> multiMapList = new ArrayList<MultiMap>();
-	
-	
-	for(int i=0;i<solutionSet.size();i++) {
-		Solution solution = solutionSet.get(i);
-		MultiMap mm = new MultiValueMap() ;
-		mm=createModificationFiles(solution, i );
-		multiMapList.add(mm);
-		
-	}
-	
-	simulateAllScenarios(solutionSet.size());
-	
-	for(int i=0;i<solutionSet.size();i++) {
-		Solution solution = solutionSet.get(i);
-		MultiMap mm = multiMapList.get(i); 
-		extractInformation(solution, mm, i);
-	
-	}
-}
+
+
 
 	/**
 	 * Evaluates a solution.

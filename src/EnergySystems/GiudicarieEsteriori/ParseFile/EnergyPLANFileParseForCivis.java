@@ -33,81 +33,152 @@ public class EnergyPLANFileParseForCivis{
 			String line;
 			boolean trackAnnualCost = false;
 
-			while ((line = br.readLine()) != null) {
-				//System.out.println(line);
-
-				StringTokenizer stringTokenizerbyEqual = new StringTokenizer(
-						line, "=");
-				StringTokenizer stringTokenizerbyColon = new StringTokenizer(
-						line, ":");
-
-				if (stringTokenizerbyEqual.countTokens() > 1) {
-
-					String tempKey = stringTokenizerbyEqual.nextToken();
-					String key = tempKey.trim();
-
-					if (key.equals("TOTAL ANNUAL COSTS"))
-						trackAnnualCost = true;
-					while (stringTokenizerbyEqual.hasMoreElements()) {
-						String str = stringTokenizerbyEqual.nextToken();
-						String str1 = str.replaceAll("[^0-9.-]", "");
-
-						// String str1 = str.replaceAll("[^0-9.]", "");
-						// String str1 = str.replaceAll("\\s+", "");
-						// String str2 = str1.replaceAll("[^a-zA-Z]", "");
-						multiMap.put(key, str1);
-					//	System.out.println(key + " " + str1);
-
-					}
-				} else if (stringTokenizerbyColon.countTokens() > 1) {
-					String tmpKey = stringTokenizerbyColon.nextToken();
-
-					String key = tmpKey.replaceAll("[^a-zA-Z ]", "");
-					key = key.trim();
-
-					while (stringTokenizerbyColon.hasMoreElements()) {
-						String str = stringTokenizerbyColon.nextToken();
-						String str1 = new String();
-						if (key.equals("WARNING")){
-							str1 = str.replaceAll("[^a-zA-Z. ]", "");
-							str1 = str1.trim();
-						}
-						else {
-
-							str1 = str.replaceAll("[^0-9.-]", "");
-						}
-						multiMap.put(key, str1);
-						//System.out.println(key + " " + str1);
-
-					}
-				}
-				if (trackAnnualCost == true)
-					break;
+			
+			//read 2 lines starting with "ANNUAL CO2 EMISSIONS (kt):"
+			while (!(line = br.readLine()).startsWith("ANNUAL CO2 EMISSIONS (kt):") ) {
+				;
 			}
-
-			String temp = br.readLine();
-			temp = br.readLine();
-
+			
+			//1st line
+			line = br.readLine();
+			String StringSplit[] = line.split("\t");
+			String tmpKey=StringSplit[0].trim(); String tmpValue = StringSplit[1].trim();
+			multiMap.put(tmpKey, tmpValue);
+			//2nd line
+			line = br.readLine();
+			StringSplit = line.split("\t");
+			tmpKey=StringSplit[0].trim(); tmpValue = StringSplit[1].trim();
+			multiMap.put(tmpKey, tmpValue);
+			
+			//read 3 lines starting with "SHARE OF RES (incl. Biomass):"
+			while (!(line = br.readLine()).startsWith("SHARE OF RES (incl. Biomass):") ) {
+				;
+			}
+			
+			//1st line
+			line = br.readLine();
+			StringSplit = line.split("\t");
+			tmpKey=StringSplit[0].trim(); tmpValue = StringSplit[1].trim();
+			multiMap.put(tmpKey, tmpValue);
+			//2nd line
+			line = br.readLine();
+			StringSplit = line.split("\t");
+			tmpKey=StringSplit[0].trim(); tmpValue = StringSplit[1].trim();
+			multiMap.put(tmpKey, tmpValue);
+			//3rd line
+			line = br.readLine();
+			StringSplit = line.split("\t");
+			tmpKey=StringSplit[0].trim(); tmpValue = StringSplit[1].trim();
+			multiMap.put(tmpKey, tmpValue);
+			
+			//read 12 lines starting with "ANNUAL FUEL CONSUMPTIONS (TWh/year)"
+			while (!(line = br.readLine()).startsWith("ANNUAL FUEL CONSUMPTIONS (GWh/year)") ) {
+				;
+			}
+			for(int i=0;i<12;i++){
+				line = br.readLine();
+				StringSplit = line.split("\t");
+				tmpKey=StringSplit[0].trim(); tmpValue = StringSplit[1].trim();
+				multiMap.put(tmpKey, tmpValue);
+								
+			}
+			
+			//read 9 lines starting with "ANNUAL COSTS (k EUR)"
+			while (!(line = br.readLine()).startsWith("ANNUAL COSTS (k EUR)") ) {
+				;
+			}
+			for(int i=0;i<9;i++){
+				line = br.readLine();
+				StringSplit = line.split("\t");
+				tmpKey=StringSplit[0].trim(); tmpValue = StringSplit[1].trim();
+				multiMap.put(tmpKey, tmpValue);
+			}
+			
+			//read "Ngas Exchange costs"
+			while (!(line = br.readLine()).startsWith("Ngas Exchange costs") ) {
+				;
+			}
+			StringSplit = line.split("\t");
+			tmpKey=StringSplit[0].trim(); tmpValue = StringSplit[2].trim();
+			multiMap.put(tmpKey, tmpValue);
+		
+			//read "Electricity exchange"
+			while (!(line = br.readLine()).startsWith("Electricity exchange") ) {
+				;
+			}
+			StringSplit = line.split("\t");
+			tmpKey=StringSplit[0].trim(); tmpValue = StringSplit[2].trim();
+			multiMap.put(tmpKey, tmpValue);
+			//read import
+			line = br.readLine();
+			StringSplit = line.split("\t");
+			tmpKey=StringSplit[0].trim(); tmpValue = StringSplit[3].trim();
+			multiMap.put(tmpKey, tmpValue);
+			//read export
+			line = br.readLine();
+			StringSplit = line.split("\t");
+			tmpKey=StringSplit[0].trim(); tmpValue = StringSplit[3].trim();
+			multiMap.put(tmpKey, tmpValue);
+			//read Bottleneck
+			line = br.readLine();
+			StringSplit = line.split("\t");
+			tmpKey=StringSplit[0].trim(); tmpValue = StringSplit[3].trim();
+			multiMap.put(tmpKey, tmpValue);
+			
+			
+			//read "Variable costs"
+			while (!(line = br.readLine()).startsWith("Variable costs") ) {
+				;
+			}
+			StringSplit = line.split("\t");
+			tmpKey=StringSplit[0].trim(); tmpValue = StringSplit[1].trim();
+			multiMap.put(tmpKey, tmpValue);
+			//read "Fixed operation costs"
+			while (!(line = br.readLine()).startsWith("Fixed operation costs") ) {
+				;
+			}
+			StringSplit = line.split("\t");
+			tmpKey=StringSplit[0].trim(); tmpValue = StringSplit[1].trim();
+			multiMap.put(tmpKey, tmpValue);
+			
+			//read "Annual Investment costs"
+			while (!(line = br.readLine()).startsWith("Annual Investment costs") ) {
+				;
+			}
+			StringSplit = line.split("\t");
+			tmpKey=StringSplit[0].trim(); tmpValue = StringSplit[1].trim();
+			multiMap.put(tmpKey, tmpValue);
+			
+			//read "TOTAL ANNUAL COSTS"
+			while (!(line = br.readLine()).startsWith("TOTAL ANNUAL COSTS") ) {
+				;
+			}
+			StringSplit = line.split("\t");
+			tmpKey=StringSplit[0].trim(); tmpValue = StringSplit[1].trim();
+			multiMap.put(tmpKey, tmpValue);
+			
+			//skip 12 lines
+			for(int i=0;i<12;i++){
+				String temp = br.readLine();
+			}
+		
 			String line1 = br.readLine();
 			String line2 = br.readLine();
 
-			String l1[] = line1.split("\0");
-			String l2[] = line2.split("\0");
+			String l1[] = line1.split("\t");
+			String l2[] = line2.split("\t");
 
 			for (int i = 0; i < l1.length; i++) {
 				l1[i] = l1[i].trim();
 				l2[i] = l2[i].trim();
 
 			}
-			/*for (int i = 1; i < l1.length; i++) {
-				System.out.println(l1[i] + " " + l2[i]);
-			}*/
 			while (!(line = br.readLine()).equals("TOTAL FOR ONE YEAR (GWh/year):")) {
 				;
 			}
 			// read annual line
 			line = br.readLine();
-			String lineTmp[] = line.split("\0");
+			String lineTmp[] = line.split("\t");
 			for (int i = 0; i < lineTmp.length; i++) {
 				lineTmp[i] = lineTmp[i].trim();
 			}
@@ -125,7 +196,7 @@ public class EnergyPLANFileParseForCivis{
 
 			for (int j = 0; j < 12; j++) {
 				line = br.readLine();
-				lineTmp = line.split("\0");
+				lineTmp = line.split("\t");
 				for (int i = 0; i < lineTmp.length; i++) {
 					lineTmp[i] = lineTmp[i].trim();
 				}
@@ -141,7 +212,7 @@ public class EnergyPLANFileParseForCivis{
 			line = br.readLine();
 			for (int j = 0; j < 3; j++) {
 				line = br.readLine();
-				lineTmp = line.split("\0");
+				lineTmp = line.split("\t");
 				for (int i = 0; i < lineTmp.length; i++) {
 					lineTmp[i] = lineTmp[i].trim();
 				}
@@ -171,6 +242,9 @@ public class EnergyPLANFileParseForCivis{
 			}*/
 			
 
+			//additional calculation
+			
+			
 		} catch (IOException e) {
 			e.printStackTrace();
 		} finally {

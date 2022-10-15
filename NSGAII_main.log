@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="windows-1252" standalone="no"?>
+<!DOCTYPE log SYSTEM "logger.dtd">
+<log>
+<record>
+  <date>2022-10-15T17:40:30.303316700Z</date>
+  <millis>1665855630303</millis>
+  <nanos>316700</nanos>
+  <sequence>0</sequence>
+  <logger>jMetal</logger>
+  <level>INFO</level>
+  <class>EnergySystems.GiudicarieEsteriori.MaOOCEIS4DMain</class>
+  <method>main</method>
+  <thread>1</thread>
+  <message>Total execution time: 67415ms</message>
+</record>
+<record>
+  <date>2022-10-15T17:40:30.411606Z</date>
+  <millis>1665855630411</millis>
+  <nanos>606000</nanos>
+  <sequence>1</sequence>
+  <logger>jMetal</logger>
+  <level>INFO</level>
+  <class>EnergySystems.GiudicarieEsteriori.MaOOCEIS4DMain</class>
+  <method>main</method>
+  <thread>1</thread>
+  <message>Variables values have been writen to file VAR</message>
+</record>
+<record>
+  <date>2022-10-15T17:40:30.416966800Z</date>
+  <millis>1665855630416</millis>
+  <nanos>966800</nanos>
+  <sequence>2</sequence>
+  <logger>jMetal</logger>
+  <level>INFO</level>
+  <class>EnergySystems.GiudicarieEsteriori.MaOOCEIS4DMain</class>
+  <method>main</method>
+  <thread>1</thread>
+  <message>Objectives values have been writen to file FUN</message>
+</record>
+<record>
+  <date>2022-10-15T17:41:33.983165100Z</date>
+  <millis>1665855693983</millis>
+  <nanos>165100</nanos>
+  <sequence>3</sequence>
+  <logger>jMetal</logger>
+  <level>INFO</level>
+  <class>EnergySystems.GiudicarieEsteriori.MaOOCEIS4DMain</class>
+  <method>main</method>
+  <thread>1</thread>
+  <message>Total execution time: 63565ms</message>
+</record>
+<record>
+  <date>2022-10-15T17:41:33.986157700Z</date>
+  <millis>1665855693986</millis>
+  <nanos>157700</nanos>
+  <sequence>4</sequence>
+  <logger>jMetal</logger>
+  <level>INFO</level>
+  <class>EnergySystems.GiudicarieEsteriori.MaOOCEIS4DMain</class>
+  <method>main</method>
+  <thread>1</thread>
+  <message>Variables values have been writen to file VAR</message>
+</record>
+<record>
+  <date>2022-10-15T17:41:33.988152200Z</date>
+  <millis>1665855693988</millis>
+  <nanos>152200</nanos>
+  <sequence>5</sequence>
+  <logger>jMetal</logger>
+  <level>INFO</level>
+  <class>EnergySystems.GiudicarieEsteriori.MaOOCEIS4DMain</class>
+  <method>main</method>
+  <thread>1</thread>
+  <message>Objectives values have been writen to file FUN</message>
+</record>
+</log>
