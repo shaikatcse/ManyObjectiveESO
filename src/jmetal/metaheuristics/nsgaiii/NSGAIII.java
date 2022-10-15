@@ -70,11 +70,13 @@ public class NSGAIII extends Algorithm {
 
 	protected List<Solution> evaluatePopulation(List<Solution> population) throws JMException {
 
-		for (Solution s : population) {
-			problem_.evaluate(s);
-		}
+		SolutionSet solutionset = convertListToSolutionSet(population);
+		
+		
+		problem_.evaluateAll(solutionset);
+		
 
-		return population;
+		return convertSolutionsetToList(solutionset);
 	}
 
 	protected List<Solution> selection(List<Solution> population) throws JMException {

@@ -92,12 +92,14 @@ public class NSGAII extends Algorithm {
     Solution newSolution;
     for (int i = 0; i < populationSize; i++) {
       newSolution = new Solution(problem_);
-      problem_.evaluate(newSolution);
-      problem_.evaluateConstraints(newSolution);
+     // problem_.evaluate(newSolution);
+      // problem_.evaluateConstraints(newSolution);
       evaluations++;
       population.add(newSolution);
     } //for       
 
+    problem_.evaluateAll(population);
+    
     // Generations 
     while (evaluations < maxEvaluations) {
 
@@ -112,16 +114,18 @@ public class NSGAII extends Algorithm {
           Solution[] offSpring = (Solution[]) crossoverOperator.execute(parents);
           mutationOperator.execute(offSpring[0]);
           mutationOperator.execute(offSpring[1]);
-          problem_.evaluate(offSpring[0]);
-          problem_.evaluateConstraints(offSpring[0]);
-          problem_.evaluate(offSpring[1]);
-          problem_.evaluateConstraints(offSpring[1]);
+          //problem_.evaluate(offSpring[0]);
+          //problem_.evaluateConstraints(offSpring[0]);
+          //problem_.evaluate(offSpring[1]);
+          //problem_.evaluateConstraints(offSpring[1]);
           offspringPopulation.add(offSpring[0]);
           offspringPopulation.add(offSpring[1]);
           evaluations += 2;
         } // if                            
       } // for
 
+      problem_.evaluateAll(population);
+      
       // Create the solutionSet union of solutionSet and offSpring
       union = ((SolutionSet) population).union(offspringPopulation);
 

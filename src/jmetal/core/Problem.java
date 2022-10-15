@@ -148,6 +148,7 @@ public abstract class Problem implements Serializable {
    */    
   public abstract void evaluate(Solution solution) throws JMException ;    
     
+  public abstract void evaluateAll(SolutionSet solutionset) throws JMException;
   /**
    * Gets the number of side constraints in the problem.
    * @return the number of constraints.
