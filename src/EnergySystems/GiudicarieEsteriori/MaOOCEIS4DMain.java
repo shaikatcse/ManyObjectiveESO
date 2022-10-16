@@ -71,21 +71,28 @@ public class MaOOCEIS4DMain {
 		// 216557,589632,471259,523486,4158963,745896};
 
 		String[] algorithms = {"NSGAII", "SPEA2"};
+		String baseDirectory = ".\\Results\\MaOOCEIS4D\\UnConstrained\\";
+		File baseDirectoryfile = new File(baseDirectory);
+		baseDirectoryfile.mkdirs();
+		
+		File track = new File(baseDirectory + "\\track.txt");
+		BufferedWriter trackBW = new BufferedWriter(new FileWriter(track.getAbsoluteFile()));
+		track.createNewFile();
 
+		
 		for (int algorithmNo = 0; algorithmNo < algorithms.length; algorithmNo++) {
 			int numberOfRun = 2;
-
-			String folder = ".\\Results\\MaOOCEIS4D\\" + algorithms[algorithmNo];
+			
+			trackBW.write(algorithms[algorithmNo]+"\n");
+			
+			
+			String folder = baseDirectory + algorithms[algorithmNo];
 			File file = new File(folder);
 			boolean b = file.mkdirs();
 
 			for (int i = 0; i < numberOfRun; i++) {
 
-				File filetmp = new File(folder);
-				File fileAllSolutions = new File(filetmp + "\\allSolutionsParameters_"
-						+ "run"+i + ".txt");
-				File fileParetoFrontSolutions = new File(filetmp + "\\ParetoFrontSolutionsParameters_"
-						+ "run"+i + ".txt");
+				trackBW.write(i+"\t");
 				
 				// PseudoRandom.setRandomGenerator(new
 				// RandomGenerator(seed[i]));
@@ -105,7 +112,7 @@ public class MaOOCEIS4DMain {
 
 				// Algorithm parameters
 				int populationSize = 5;
-				int maxEvaluations = 20;
+				int maxEvaluations = 10;
 				algorithm.setInputParameter("populationSize", populationSize);
 				algorithm.setInputParameter("maxEvaluations", maxEvaluations);
 
@@ -175,6 +182,7 @@ public class MaOOCEIS4DMain {
 				logger_.info("Objectives values have been writen to file FUN");
 				population.printFeasibleFUN(folder + "\\FUN"+i );
 				// population.printFeasibleFUN("FUN");
+				trackBW.write("\n");
 			}
 			// mergeFUNFiles(folder);
 
@@ -188,7 +196,9 @@ public class MaOOCEIS4DMain {
 			// simulatedScenario[scenario]);
 			// ob.extractAllEnergyPLANParametersFromAVARFile(folder+"\\mergeVAR.pf");
 
+			
 		}
+		trackBW.close();
 	}
 
 	

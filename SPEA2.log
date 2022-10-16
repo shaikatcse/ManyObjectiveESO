@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="windows-1252" standalone="no"?>
+<!DOCTYPE log SYSTEM "logger.dtd">
+<log>
+<record>
+  <date>2022-10-16T11:51:38.745496700Z</date>
+  <millis>1665921098745</millis>
+  <nanos>496700</nanos>
+  <sequence>0</sequence>
+  <logger>jMetal</logger>
+  <level>INFO</level>
+  <class>jmetal.metaheuristics.spea2.SPEA2_main</class>
+  <method>main</method>
+  <thread>1</thread>
+  <message>Total execution time: 2984ms</message>
+</record>
+<record>
+  <date>2022-10-16T11:51:38.885530400Z</date>
+  <millis>1665921098885</millis>
+  <nanos>530400</nanos>
+  <sequence>1</sequence>
+  <logger>jMetal</logger>
+  <level>INFO</level>
+  <class>jmetal.metaheuristics.spea2.SPEA2_main</class>
+  <method>main</method>
+  <thread>1</thread>
+  <message>Objectives values have been writen to file FUN</message>
+</record>
+<record>
+  <date>2022-10-16T11:51:38.897217900Z</date>
+  <millis>1665921098897</millis>
+  <nanos>217900</nanos>
+  <sequence>2</sequence>
+  <logger>jMetal</logger>
+  <level>INFO</level>
+  <class>jmetal.metaheuristics.spea2.SPEA2_main</class>
+  <method>main</method>
+  <thread>1</thread>
+  <message>Variables values have been writen to file VAR</message>
+</record>
+</log>

@@ -15,7 +15,7 @@ Input_El_demand_cooling_share=
 input_dh_demand_TWh=
 0
 input_RES1_capacity=
-40120.44851480726
+36404.882534814635
 input_RES2_capacity=
 500
 input_RES1_factor=
@@ -111,7 +111,7 @@ CIVIS_CEIS_HydroPump_distribution.txt
 filnavn_nuclear=
 Hour_wind_1.txt
 input_transport_TWh=
-5.71053
+5.01543
 input_transport_TWh_V2G=
 0
 Filnavn_transport=
@@ -299,7 +299,7 @@ input_fuel_PP[4]=
 input_fuel_Transport[1]=
 0
 input_fuel_Transport[2]=
-4.574907252747253
+5.916085274725274
 input_fuel_Transport[3]=
 0
 input_fuel_Transport[4]=
@@ -337,11 +337,11 @@ input_VC_eh_indv=
 input_fuel_Households[1]=
 0
 input_fuel_Households[2]=
-4.6105286348562755
+8.203618551223913
 input_fuel_Households[3]=
-9.839956998067398
+12.213553042723472
 input_fuel_Households[4]=
-6.762656941898513
+3.9508010133817475
 input_HH_coalboiler_eff=
 0.7
 input_HH_oilboiler_eff=
@@ -371,9 +371,9 @@ input_HH_HP_solar=
 input_HH_EB_solar=
 0
 input_HH_BioCHP_heat=
-33.09737599481288
+19.928975378651486
 input_HH_HP_heat=
-5.106247092617556
+15.372831281881947
 input_HH_EB_heat=
 0
 input_HH_H2CHP_eff_el=
@@ -903,7 +903,7 @@ input_Handling_Transp[5]=
 input_Handling_Transp[1]=
 0
 input_fuel_Transport[5]=
-3.3526525806451613
+4.33897064516129
 input_Period_Various7=
 0
 input_FOM_Various7=

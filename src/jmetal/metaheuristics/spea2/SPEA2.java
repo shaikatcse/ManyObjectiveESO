@@ -75,11 +75,13 @@ public class SPEA2 extends Algorithm{
     Solution newSolution;
     for (int i = 0; i < populationSize; i++) {
       newSolution = new Solution(problem_);
-      problem_.evaluate(newSolution);            
-      problem_.evaluateConstraints(newSolution);
+      //problem_.evaluate(newSolution);            
+      //problem_.evaluateConstraints(newSolution);
       evaluations++;
       solutionSet.add(newSolution);
-    }                        
+    }   
+    
+    problem_.evaluateAll(solutionSet);
         
     while (evaluations < maxEvaluations){               
       SolutionSet union = ((SolutionSet)solutionSet).union(archive);
@@ -104,11 +106,13 @@ public class SPEA2 extends Algorithm{
         //make the crossover 
         Solution [] offSpring = (Solution [])crossoverOperator.execute(parents);            
         mutationOperator.execute(offSpring[0]);            
-        problem_.evaluate(offSpring[0]);
-        problem_.evaluateConstraints(offSpring[0]);            
+        //problem_.evaluate(offSpring[0]);
+        //problem_.evaluateConstraints(offSpring[0]);            
         offSpringSolutionSet.add(offSpring[0]);
         evaluations++;
       } // while
+      //evaluate all
+      problem_.evaluateAll(offSpringSolutionSet);
       // End Create a offSpring solutionSet
       solutionSet = offSpringSolutionSet;                   
     } // while

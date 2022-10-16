@@ -30,6 +30,7 @@ import jmetal.operators.mutation.MutationFactory;
 import jmetal.operators.selection.SelectionFactory;
 import jmetal.problems.Kursawe;
 import jmetal.problems.ProblemFactory;
+import jmetal.problems.ZDT.ZDT1;
 import jmetal.qualityIndicator.QualityIndicator;
 import jmetal.util.Configuration;
 import jmetal.util.JMException;
@@ -84,9 +85,9 @@ public class SPEA2_main {
       indicators = new QualityIndicator(problem, args[1]) ;
     } // if
     else { // Default problem
-      problem = new Kursawe("Real", 3); 
+      //problem = new Kursawe("Real", 3); 
       //problem = new Water("Real");
-      //problem = new ZDT1("ArrayReal", 1000);
+      problem = new ZDT1("ArrayReal", 30);
       //problem = new ZDT4("BinaryReal");
       //problem = new WFG1("Real");
       //problem = new DTLZ1("Real");

@@ -5,8 +5,10 @@ import java.util.HashMap;
 import jmetal.core.Algorithm;
 import jmetal.core.Problem;
 import jmetal.metaheuristics.nsgaII.NSGAII;
+import jmetal.metaheuristics.nsgaII.configurations.NSGAII_Configurations;
 import jmetal.metaheuristics.nsgaiii.NSGAIIIV1_2;
 import jmetal.metaheuristics.spea2.SPEA2;
+import jmetal.metaheuristics.spea2.configurations.SPEA2_Configurations;
 import jmetal.operators.mutation.BitFlipMutation;
 import jmetal.operators.mutation.Mutation;
 import jmetal.operators.mutation.NonUniformMutation;
@@ -21,9 +23,9 @@ public class AlgorithmFactory {
 	 public static Algorithm getAlgorithm(String name, HashMap parameters) throws JMException{
 		 
 		    if (name.equalsIgnoreCase("NSGAII"))
-		      return new NSGAII((Problem) parameters.get("Problem"));
+		      return new NSGAII_Configurations((Problem) parameters.get("Problem")).configure();
 		    else if (name.equalsIgnoreCase("SPEA2"))
-		      return new SPEA2((Problem) parameters.get("Problem"));
+		      return new SPEA2_Configurations((Problem) parameters.get("Problem")).configure();
 		    else if (name.equalsIgnoreCase("NSGAIII"))
 		      return new NSGAIIIV1_2((Problem) parameters.get("Problem"), (int) parameters.get("numberOfDivision") );
 		    /*else if (name.equalsIgnoreCase("SwapMutation"))
