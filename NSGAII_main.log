@@ -2,21 +2,21 @@
 <!DOCTYPE log SYSTEM "logger.dtd">
 <log>
 <record>
-  <date>2022-10-16T12:03:41.311734600Z</date>
-  <millis>1665921821311</millis>
-  <nanos>734600</nanos>
+  <date>2022-10-17T05:34:55.066372700Z</date>
+  <millis>1665984895066</millis>
+  <nanos>372700</nanos>
   <sequence>0</sequence>
   <logger>jMetal</logger>
   <level>INFO</level>
   <class>EnergySystems.GiudicarieEsteriori.MaOOCEIS4DMain</class>
   <method>main</method>
   <thread>1</thread>
-  <message>Total execution time: 63967ms</message>
+  <message>Total execution time: 22189ms</message>
 </record>
 <record>
-  <date>2022-10-16T12:03:41.474210100Z</date>
-  <millis>1665921821474</millis>
-  <nanos>210100</nanos>
+  <date>2022-10-17T05:34:55.116277500Z</date>
+  <millis>1665984895116</millis>
+  <nanos>277500</nanos>
   <sequence>1</sequence>
   <logger>jMetal</logger>
   <level>INFO</level>
@@ -26,9 +26,9 @@
   <message>Variables values have been writen to file VAR</message>
 </record>
 <record>
-  <date>2022-10-16T12:03:41.477433200Z</date>
-  <millis>1665921821477</millis>
-  <nanos>433200</nanos>
+  <date>2022-10-17T05:34:55.116277500Z</date>
+  <millis>1665984895116</millis>
+  <nanos>277500</nanos>
   <sequence>2</sequence>
   <logger>jMetal</logger>
   <level>INFO</level>
@@ -38,21 +38,21 @@
   <message>Objectives values have been writen to file FUN</message>
 </record>
 <record>
-  <date>2022-10-16T12:04:42.428060500Z</date>
-  <millis>1665921882428</millis>
-  <nanos>60500</nanos>
+  <date>2022-10-17T05:35:18.047847200Z</date>
+  <millis>1665984918047</millis>
+  <nanos>847200</nanos>
   <sequence>3</sequence>
   <logger>jMetal</logger>
   <level>INFO</level>
   <class>EnergySystems.GiudicarieEsteriori.MaOOCEIS4DMain</class>
   <method>main</method>
   <thread>1</thread>
-  <message>Total execution time: 60949ms</message>
+  <message>Total execution time: 22930ms</message>
 </record>
 <record>
-  <date>2022-10-16T12:04:42.438781400Z</date>
-  <millis>1665921882438</millis>
-  <nanos>781400</nanos>
+  <date>2022-10-17T05:35:18.048843600Z</date>
+  <millis>1665984918048</millis>
+  <nanos>843600</nanos>
   <sequence>4</sequence>
   <logger>jMetal</logger>
   <level>INFO</level>
@@ -62,9 +62,9 @@
   <message>Variables values have been writen to file VAR</message>
 </record>
 <record>
-  <date>2022-10-16T12:04:42.444606500Z</date>
-  <millis>1665921882444</millis>
-  <nanos>606500</nanos>
+  <date>2022-10-17T05:35:18.048843600Z</date>
+  <millis>1665984918048</millis>
+  <nanos>843600</nanos>
   <sequence>5</sequence>
   <logger>jMetal</logger>
   <level>INFO</level>
@@ -74,21 +74,21 @@
   <message>Objectives values have been writen to file FUN</message>
 </record>
 <record>
-  <date>2022-10-16T12:05:23.654363400Z</date>
-  <millis>1665921923654</millis>
-  <nanos>363400</nanos>
+  <date>2022-10-17T05:35:33.470984900Z</date>
+  <millis>1665984933470</millis>
+  <nanos>984900</nanos>
   <sequence>6</sequence>
   <logger>jMetal</logger>
   <level>INFO</level>
   <class>EnergySystems.GiudicarieEsteriori.MaOOCEIS4DMain</class>
   <method>main</method>
   <thread>1</thread>
-  <message>Total execution time: 41203ms</message>
+  <message>Total execution time: 15420ms</message>
 </record>
 <record>
-  <date>2022-10-16T12:05:23.665102Z</date>
-  <millis>1665921923665</millis>
-  <nanos>102000</nanos>
+  <date>2022-10-17T05:35:33.471976200Z</date>
+  <millis>1665984933471</millis>
+  <nanos>976200</nanos>
   <sequence>7</sequence>
   <logger>jMetal</logger>
   <level>INFO</level>
@@ -98,9 +98,9 @@
   <message>Variables values have been writen to file VAR</message>
 </record>
 <record>
-  <date>2022-10-16T12:05:23.670032600Z</date>
-  <millis>1665921923670</millis>
-  <nanos>32600</nanos>
+  <date>2022-10-17T05:35:33.471976200Z</date>
+  <millis>1665984933471</millis>
+  <nanos>976200</nanos>
   <sequence>8</sequence>
   <logger>jMetal</logger>
   <level>INFO</level>
@@ -110,21 +110,21 @@
   <message>Objectives values have been writen to file FUN</message>
 </record>
 <record>
-  <date>2022-10-16T12:06:04.881882900Z</date>
-  <millis>1665921964881</millis>
-  <nanos>882900</nanos>
+  <date>2022-10-17T05:35:49.808806Z</date>
+  <millis>1665984949808</millis>
+  <nanos>806000</nanos>
   <sequence>9</sequence>
   <logger>jMetal</logger>
   <level>INFO</level>
   <class>EnergySystems.GiudicarieEsteriori.MaOOCEIS4DMain</class>
   <method>main</method>
   <thread>1</thread>
-  <message>Total execution time: 41209ms</message>
+  <message>Total execution time: 16336ms</message>
 </record>
 <record>
-  <date>2022-10-16T12:06:04.886409800Z</date>
-  <millis>1665921964886</millis>
-  <nanos>409800</nanos>
+  <date>2022-10-17T05:35:49.809803300Z</date>
+  <millis>1665984949809</millis>
+  <nanos>803300</nanos>
   <sequence>10</sequence>
   <logger>jMetal</logger>
   <level>INFO</level>
@@ -134,9 +134,9 @@
   <message>Variables values have been writen to file VAR</message>
 </record>
 <record>
-  <date>2022-10-16T12:06:04.888402600Z</date>
-  <millis>1665921964888</millis>
-  <nanos>402600</nanos>
+  <date>2022-10-17T05:35:49.809803300Z</date>
+  <millis>1665984949809</millis>
+  <nanos>803300</nanos>
   <sequence>11</sequence>
   <logger>jMetal</logger>
   <level>INFO</level>
