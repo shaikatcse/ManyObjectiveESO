@@ -70,7 +70,7 @@ public class MaOOCEIS4DMain {
 		// long seed[]={102354,986587,456987,159753,
 		// 216557,589632,471259,523486,4158963,745896};
 
-		String[] algorithms = {"NSGAII", "SPEA2"};
+		String[] algorithms = {/*"NSGAII", "SPEA2",*/ "MOEAD"};
 		String baseDirectory = ".\\Results\\MaOOCEIS4D\\UnConstrained\\";
 		File baseDirectoryfile = new File(baseDirectory);
 		baseDirectoryfile.mkdirs();
@@ -110,7 +110,7 @@ public class MaOOCEIS4DMain {
 				algorithm = AlgorithmFactory.getAlgorithm(algorithms[algorithmNo], parameters); 
 				//algorithm.setInputParameter("folder", folder);
 
-				// Algorithm parameters
+				/*// Algorithm parameters
 				int populationSize = 5;
 				int maxEvaluations = 10;
 				algorithm.setInputParameter("populationSize", populationSize);
@@ -141,7 +141,7 @@ public class MaOOCEIS4DMain {
 				algorithm.addOperator("selection", selection);
 
 				// Add the indicator object to the algorithm
-				algorithm.setInputParameter("indicators", indicators);
+				algorithm.setInputParameter("indicators", indicators);*/
 
 				// Execute the Algorithm
 				long initTime = System.currentTimeMillis();

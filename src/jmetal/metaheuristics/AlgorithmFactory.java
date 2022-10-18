@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 import jmetal.core.Algorithm;
 import jmetal.core.Problem;
+import jmetal.metaheuristics.moead.configurations.MOEAD_Configurations;
 import jmetal.metaheuristics.nsgaII.NSGAII;
 import jmetal.metaheuristics.nsgaII.configurations.NSGAII_Configurations;
 import jmetal.metaheuristics.nsgaiii.NSGAIIIV1_2;
@@ -28,8 +29,8 @@ public class AlgorithmFactory {
 		      return new SPEA2_Configurations((Problem) parameters.get("Problem")).configure();
 		    else if (name.equalsIgnoreCase("NSGAIII"))
 		      return new NSGAIIIV1_2((Problem) parameters.get("Problem"), (int) parameters.get("numberOfDivision") );
-		    /*else if (name.equalsIgnoreCase("SwapMutation"))
-		      return new SwapMutation(parameters);*/
+		    else if (name.equalsIgnoreCase("MOEAD"))
+		      return new MOEAD_Configurations((Problem) parameters.get("Problem")).configure();
 		    else
 		    {
 		      Configuration.logger_.severe("Operator '" + name + "' not found ");

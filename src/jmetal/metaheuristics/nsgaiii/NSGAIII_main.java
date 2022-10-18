@@ -105,7 +105,7 @@ public class NSGAIII_main {
       //problem = new ConstrEx("Real");
     	//problem = new Srinivas("Real");
     	
-    	problem = new DTLZ1("Real", 20, 5);
+    	problem = new ZDT3("Real", 20);
       //problem = new OKA2("Real") ;
     } // else
     

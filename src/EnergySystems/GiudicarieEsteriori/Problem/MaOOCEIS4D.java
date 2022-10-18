@@ -582,9 +582,22 @@ public void extractInformation(Solution solution, MultiMap modifyMap, int serial
 	@SuppressWarnings("unchecked")
 	public void evaluate(Solution solution) throws JMException {
 
-		
-		
+			
+			
+			
+				MultiMap mm = new MultiValueMap() ;
+				mm=createModificationFiles(solution, 0 );
+				
+			
+			
+			simulateAllScenarios(1);
+			
+			extractInformation(solution, mm, 0);
+			
+			}
 	}
+		
+	
 
 	
-}
+

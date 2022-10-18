@@ -30,6 +30,7 @@ import jmetal.operators.mutation.MutationFactory;
 import jmetal.problems.Kursawe;
 import jmetal.problems.ProblemFactory;
 import jmetal.problems.DTLZ.DTLZ3;
+import jmetal.problems.ZDT.ZDT3;
 import jmetal.qualityIndicator.QualityIndicator;
 import jmetal.util.Configuration;
 import jmetal.util.JMException;
@@ -91,7 +92,7 @@ public class MOEAD_main {
       //problem = new Kursawe("Real", 3); 
       //problem = new Kursawe("BinaryReal", 3);
       //problem = new Water("Real");
-      //problem = new ZDT1("ArrayReal", 100);
+      //problem = new ZDT3("Real", 20);
       //problem = new ConstrEx("Real");
       problem = new DTLZ3("Real", 12, 4);
       //problem = new OKA2("Real") ;
@@ -101,8 +102,8 @@ public class MOEAD_main {
     //algorithm = new MOEAD_DRA(problem);
     
     // Algorithm parameters
-    algorithm.setInputParameter("populationSize",165);
-    algorithm.setInputParameter("maxEvaluations",150000);
+    algorithm.setInputParameter("populationSize",200);
+    algorithm.setInputParameter("maxEvaluations",30000);
     
     // Directory with the files containing the weight vectors used in 
     // Q. Zhang,  W. Liu,  and H Li, The Performance of a New Version of MOEA/D 
@@ -112,7 +113,7 @@ public class MOEAD_main {
     algorithm.setInputParameter("dataDirectory",
     "C:/Users/shaik/eclipse-workspace/jmetal511/jMetal/resources/weightVectorFiles/moead");
 
-    algorithm.setInputParameter("finalSize", 300) ; // used by MOEAD_DRA
+    //algorithm.setInputParameter("finalSize", 300) ; // used by MOEAD_DRA
 
     algorithm.setInputParameter("T", 20) ;
     algorithm.setInputParameter("delta", 0.9) ;
@@ -122,8 +123,8 @@ public class MOEAD_main {
     parameters = new HashMap() ;
     parameters.put("CR", 1.0) ;
     parameters.put("F", 0.5) ;
-    crossover = CrossoverFactory.getCrossoverOperator("DifferentialEvolutionCrossover", parameters);                   
-    //crossover = CrossoverFactory.getCrossoverOperator("SBXCrossover", parameters);                   
+    //crossover = CrossoverFactory.getCrossoverOperator("DifferentialEvolutionCrossover", parameters);                   
+    crossover = CrossoverFactory.getCrossoverOperator("SBXCrossover", parameters);                   
     
     
     // Mutation operator
