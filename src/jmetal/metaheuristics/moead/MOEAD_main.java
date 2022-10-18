@@ -92,18 +92,18 @@ public class MOEAD_main {
       //problem = new Kursawe("Real", 3); 
       //problem = new Kursawe("BinaryReal", 3);
       //problem = new Water("Real");
-      //problem = new ZDT3("Real", 20);
+      problem = new ZDT3("Real", 20);
       //problem = new ConstrEx("Real");
-      problem = new DTLZ3("Real", 12, 4);
+      //problem = new DTLZ3("Real", 12, 4);
       //problem = new OKA2("Real") ;
     } // else
 
-    algorithm = new MOEAD(problem);
+    algorithm = new MOEADEA(problem);
     //algorithm = new MOEAD_DRA(problem);
     
     // Algorithm parameters
-    algorithm.setInputParameter("populationSize",200);
-    algorithm.setInputParameter("maxEvaluations",30000);
+    algorithm.setInputParameter("populationSize",165);
+    algorithm.setInputParameter("maxEvaluations",16500);
     
     // Directory with the files containing the weight vectors used in 
     // Q. Zhang,  W. Liu,  and H Li, The Performance of a New Version of MOEA/D 

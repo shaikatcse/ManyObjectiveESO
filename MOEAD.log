@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="windows-1252" standalone="no"?>
+<!DOCTYPE log SYSTEM "logger.dtd">
+<log>
+<record>
+  <date>2022-10-18T19:26:12.678268500Z</date>
+  <millis>1666121172678</millis>
+  <nanos>268500</nanos>
+  <sequence>0</sequence>
+  <logger>jMetal</logger>
+  <level>INFO</level>
+  <class>jmetal.metaheuristics.moead.MOEAD_main</class>
+  <method>main</method>
+  <thread>1</thread>
+  <message>Total execution time: 412ms</message>
+</record>
+<record>
+  <date>2022-10-18T19:26:12.781523900Z</date>
+  <millis>1666121172781</millis>
+  <nanos>523900</nanos>
+  <sequence>1</sequence>
+  <logger>jMetal</logger>
+  <level>INFO</level>
+  <class>jmetal.metaheuristics.moead.MOEAD_main</class>
+  <method>main</method>
+  <thread>1</thread>
+  <message>Objectives values have been writen to file FUN</message>
+</record>
+<record>
+  <date>2022-10-18T19:26:12.792237Z</date>
+  <millis>1666121172792</millis>
+  <nanos>237000</nanos>
+  <sequence>2</sequence>
+  <logger>jMetal</logger>
+  <level>INFO</level>
+  <class>jmetal.metaheuristics.moead.MOEAD_main</class>
+  <method>main</method>
+  <thread>1</thread>
+  <message>Variables values have been writen to file VAR</message>
+</record>
+</log>

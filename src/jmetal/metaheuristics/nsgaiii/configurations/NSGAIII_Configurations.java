@@ -61,8 +61,8 @@ public class NSGAIII_Configurations {
 	
 	     this.problem = problem;
 	  // Default experiments.settings
-	    populationSize_              = 168   ;
-	    maxEvaluations_              = 16800 ;
+	    populationSize_              = 200   ;
+	    maxEvaluations_              = 20000 ;
 	    mutationProbability_         = 1.0/problem.getNumberOfVariables() ;
 	    crossoverProbability_        = 0.9   ;
 	    mutationDistributionIndex_   = 20.0  ;

@@ -1,4 +1,4 @@
-//  StandardStudy.java
+ //  StandardStudy.java
 //
 //  Authors:
 //       Antonio J. Nebro <antonio@lcc.uma.es>

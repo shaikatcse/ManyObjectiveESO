@@ -29,57 +29,30 @@ import jmetal.util.PseudoRandom;
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.StringTokenizer;
 import java.util.Vector;
 
-public class MOEAD extends Algorithm {
 
-  protected int populationSize_;
-  /**
-   * Stores the population
-   */
-  protected SolutionSet population_;
-  /**
-   * Z vector (ideal point)
-   */
-  double[] z_;
-  /**
-   * Lambda vectors
-   */
-  //Vector<Vector<Double>> lambda_ ; 
-  double[][] lambda_;
-  /**
-   * T: neighbour size
-   */
-  int T_;
-  /**
-   * Neighborhood
-   */
-  int[][] neighborhood_;
-  /**
-   * delta: probability that parent solutions are selected from neighbourhood
-   */
-  double delta_;
-  /**
-   * nr: maximal number of solutions replaced by each child solution
-   */
-  int nr_;
-  Solution[] indArray_;
-  String functionType_;
-  int evaluations_;
-  /**
-   * Operators
-   */
-  Operator crossover_;
-  Operator mutation_;
-
-  String dataDirectory_;
+class Everything{
+	Solution solution;
+	int type, n;
+	public Everything(Solution solution, int type, int n) {
+		super();
+		this.solution = solution;
+		this.type = type;
+		this.n = n;
+	}
+	
+	
+}
+public class MOEADEA extends MOEAD {
 
   /** 
    * Constructor
    * @param problem Problem to solve
    */
-  public MOEAD(Problem problem) {
+  public MOEADEA(Problem problem) {
     super (problem) ;
 
     functionType_ = "_TCHE1";
@@ -116,6 +89,8 @@ public class MOEAD extends Algorithm {
     crossover_ = operators_.get("crossover"); // default: DE crossover
     mutation_ = operators_.get("mutation");  // default: polynomial mutation
 
+    ArrayList<Everything> offSpring = new ArrayList<>();
+    
     // STEP 1. Initialization
     // STEP 1.1. Compute euclidean distances between weight vectors and find T
     initUniformWeight();
@@ -182,19 +157,43 @@ public class MOEAD extends Algorithm {
         // Apply mutation
         mutation_.execute(child);
 
-        // Evaluation
-        problem_.evaluate(child);      
+        offSpring.add(new Everything(child, type, n));
         
         evaluations_++;
 
         // STEP 2.3. Repair. Not necessary
 
-        // STEP 2.4. Update z_
-        updateReference(child);
+          } // for 
+      
+      SolutionSet s = new SolutionSet(populationSize_);
+      for(int i=0;i<offSpring.size();i++) {
+          
+    	  Everything e = offSpring.get(i);
+    	  Solution child = e.solution;
+    	  s.add(child);
+      }
+     
+      problem_.evaluateAll(s);
+      
+      // STEP 2.4. Update z_
+      
+      
+      for(int i=0;i<offSpring.size();i++) {
+      
+    	  Everything e = offSpring.get(i);
+    	  Solution child = e.solution;
+    	  int type = e.type;
+    	  int n = e.n;
+    	  
+    	  updateReference(child);
 
-        // STEP 2.5. Update of solutions
-        updateProblem(child, n, type);
-      } // for 
+    	  // STEP 2.5. Update of solutions
+    	  updateProblem(child, n, type);
+    	  
+    	  
+      }
+      offSpring.clear();
+    
     } while (evaluations_ < maxEvaluations);
 
     return population_;
