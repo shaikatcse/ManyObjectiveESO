@@ -36,21 +36,15 @@ public class NSGAIII extends Algorithm {
 	 * @param problem
 	 *            Problem to solve
 	 */
-	public NSGAIII(Problem problem, int numberOfDivisions) {
+	public NSGAIII(Problem problem) {
 		super(problem);
 
-		
-
-		(new ReferencePoint()).generateReferencePoints(referencePoints, getProblem().getNumberOfObjectives(),
-				numberOfDivisions);
-
-		int populationSize = referencePoints.size();
-		while (populationSize % 4 > 0) {
-			populationSize++;
-		}
-
-		System.out.println("rpssize: " + referencePoints.size());
-		
+		/*
+		 * int populationSize = referencePoints.size(); while (populationSize % 4 > 0) {
+		 * populationSize++; }
+		 * 
+		 * System.out.println("rpssize: " + referencePoints.size());
+		 */
 
 	} // NSGAII constructor end
 
@@ -59,9 +53,9 @@ public class NSGAIII extends Algorithm {
 	}
 
 	protected void updateProgress() {
-		
+
 		evaluations++;
-		System.out.println(evaluations);
+		
 	}
 
 	protected boolean isStoppingConditionReached() {
@@ -71,10 +65,8 @@ public class NSGAIII extends Algorithm {
 	protected List<Solution> evaluatePopulation(List<Solution> population) throws JMException {
 
 		SolutionSet solutionset = convertListToSolutionSet(population);
-		
-		
+
 		problem_.evaluateAll(solutionset);
-		
 
 		return convertSolutionsetToList(solutionset);
 	}
@@ -203,33 +195,34 @@ public class NSGAIII extends Algorithm {
 	public SolutionSet execute() throws JMException, ClassNotFoundException {
 		// Read the parameters
 		populationSize = ((Integer) getInputParameter("populationSize")).intValue();
-	    		
+
 		maxEvaluations = ((Integer) getInputParameter("maxEvaluations")).intValue();
-				indicators = (QualityIndicator) getInputParameter("indicators");
+		indicators = (QualityIndicator) getInputParameter("indicators");
 
-				mutationOperator = operators_.get("mutation");
-				crossoverOperator = operators_.get("crossover");
-				selectionOperator = operators_.get("selection");
-		
-		List<Solution> population = new ArrayList<>(populationSize); 
+		numberOfDivisions = ((Integer) getInputParameter("numberOfDivisions")).intValue();
+														  
+		mutationOperator = operators_.get("mutation");
+		crossoverOperator = operators_.get("crossover");
+		selectionOperator = operators_.get("selection");
+
+		(new ReferencePoint()).generateReferencePoints(referencePoints, getProblem().getNumberOfObjectives(),
+				numberOfDivisions);
+
+		List<Solution> population = new ArrayList<>(populationSize);
 		List<Solution> offspringPopulation;
-		    List<Solution> matingPopulation;
+		List<Solution> matingPopulation;
 
-		    population = createInitialPopulation();
-		    population = evaluatePopulation(population);
-		    initProgress();
-		    while (!isStoppingConditionReached()) {
-		      matingPopulation = selection(population);
-		      offspringPopulation = reproduction(matingPopulation);
-		      offspringPopulation = evaluatePopulation(offspringPopulation);
-		      population = replacement(population, offspringPopulation);
-		      updateProgress();
+		population = createInitialPopulation();
+		population = evaluatePopulation(population);
+		initProgress();
+		while (!isStoppingConditionReached()) {
+			matingPopulation = selection(population);
+			offspringPopulation = reproduction(matingPopulation);
+			offspringPopulation = evaluatePopulation(offspringPopulation);
+			population = replacement(population, offspringPopulation);
+			updateProgress();
+		}
+		return convertListToSolutionSet(population);
 	}
-		    return convertListToSolutionSet(population);
-	}
-
-	  
-	 
-	  
 
 }

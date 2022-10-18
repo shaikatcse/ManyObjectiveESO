@@ -19,12 +19,13 @@
 //  You should have received a copy of the GNU Lesser General Public License
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-package jmetal.metaheuristics.nsgaII.configurations;
+package jmetal.metaheuristics.nsgaiii.configurations;
 
 import jmetal.core.Algorithm;
 import jmetal.core.Problem;
 import jmetal.experiments.Settings;
 import jmetal.metaheuristics.nsgaII.NSGAII;
+import jmetal.metaheuristics.nsgaiii.NSGAIIIV1_2;
 import jmetal.operators.crossover.Crossover;
 import jmetal.operators.crossover.CrossoverFactory;
 import jmetal.operators.mutation.Mutation;
@@ -34,13 +35,14 @@ import jmetal.operators.selection.SelectionFactory;
 import jmetal.problems.ProblemFactory;
 import jmetal.util.JMException;
 
+
 import java.util.HashMap;
 import java.util.Properties;
 
 /**
  * Settings class of algorithm NSGA-II (real encoding)
  */
-public class NSGAII_Configurations {
+public class NSGAIII_Configurations {
   public Problem problem;
 	
 	public int populationSize_                 ;
@@ -49,22 +51,23 @@ public class NSGAII_Configurations {
   public double crossoverProbability_        ;
   public double mutationDistributionIndex_   ;
   public double crossoverDistributionIndex_  ;
-
+  public int numberOfDivision ;
+  
   /**
    * Constructor
    */
   
-  public NSGAII_Configurations(Problem problem) {
+  public NSGAIII_Configurations(Problem problem) {
 	
-	    Object [] problemParams = {"Real"};
-	      this.problem = problem;
+	     this.problem = problem;
 	  // Default experiments.settings
-	    populationSize_              = 10   ;
-	    maxEvaluations_              = 100 ;
+	    populationSize_              = 168   ;
+	    maxEvaluations_              = 16800 ;
 	    mutationProbability_         = 1.0/problem.getNumberOfVariables() ;
 	    crossoverProbability_        = 0.9   ;
 	    mutationDistributionIndex_   = 20.0  ;
-	    crossoverDistributionIndex_  = 20.0  ;
+	    crossoverDistributionIndex_  = 30.0  ;
+	    numberOfDivision = 8;
 	  } // NSGAII_Settings
 
   
@@ -83,12 +86,13 @@ public class NSGAII_Configurations {
 
     // Creating the algorithm. There are two choices: NSGAII and its steady-
     // state variant ssNSGAII
-    algorithm = new NSGAII(problem) ;
+    algorithm = new NSGAIIIV1_2(problem) ;
     //algorithm = new ssNSGAII(problem_) ;
 
     // Algorithm parameters
     algorithm.setInputParameter("populationSize",populationSize_);
     algorithm.setInputParameter("maxEvaluations",maxEvaluations_);
+    algorithm.setInputParameter("numberOfDivisions", numberOfDivision);
 
     // Mutation and Crossover for Real codification
     parameters = new HashMap() ;

@@ -8,6 +8,7 @@ import jmetal.metaheuristics.moead.configurations.MOEAD_Configurations;
 import jmetal.metaheuristics.nsgaII.NSGAII;
 import jmetal.metaheuristics.nsgaII.configurations.NSGAII_Configurations;
 import jmetal.metaheuristics.nsgaiii.NSGAIIIV1_2;
+import jmetal.metaheuristics.nsgaiii.configurations.NSGAIII_Configurations;
 import jmetal.metaheuristics.spea2.SPEA2;
 import jmetal.metaheuristics.spea2.configurations.SPEA2_Configurations;
 import jmetal.operators.mutation.BitFlipMutation;
@@ -28,7 +29,7 @@ public class AlgorithmFactory {
 		    else if (name.equalsIgnoreCase("SPEA2"))
 		      return new SPEA2_Configurations((Problem) parameters.get("Problem")).configure();
 		    else if (name.equalsIgnoreCase("NSGAIII"))
-		      return new NSGAIIIV1_2((Problem) parameters.get("Problem"), (int) parameters.get("numberOfDivision") );
+		      return new NSGAIII_Configurations((Problem) parameters.get("Problem")).configure();
 		    else if (name.equalsIgnoreCase("MOEAD"))
 		      return new MOEAD_Configurations((Problem) parameters.get("Problem")).configure();
 		    else

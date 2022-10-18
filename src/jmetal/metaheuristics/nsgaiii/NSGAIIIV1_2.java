@@ -25,8 +25,8 @@ public class NSGAIIIV1_2 extends NSGAIII {
 	 * @param problem
 	 *            Problem to solve
 	 */
-	public NSGAIIIV1_2(Problem problem, int numberOfDivisions) {
-		super(problem, numberOfDivisions);
+	public NSGAIIIV1_2(Problem problem) {
+		super(problem);
 
 		
 		
