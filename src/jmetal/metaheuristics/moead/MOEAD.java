@@ -228,7 +228,7 @@ public class MOEAD extends Algorithm {
         int j = 0;
         String aux = br.readLine();
         while (aux != null) {
-          StringTokenizer st = new StringTokenizer(aux, ",");
+          StringTokenizer st = new StringTokenizer(aux, " ");
           j = 0;
           numberOfObjectives = st.countTokens();
           while (st.hasMoreTokens()) {

@@ -63,11 +63,9 @@ public class StandardStudy extends Experiment {
           parameters[i].put("paretoFrontFile_", paretoFrontFile_[problemIndex]);
         } // if
 
-        algorithm[0] = new NSGAII_Settings(problemName).configure(parameters[0]);
-        algorithm[1] = new SPEA2_Settings(problemName).configure(parameters[1]);
-        algorithm[2] = new MOCell_Settings(problemName).configure(parameters[2]);
-        algorithm[3] = new SMPSO_Settings(problemName).configure(parameters[3]);
-        algorithm[4] = new GDE3_Settings(problemName).configure(parameters[4]);
+        algorithm[0] = new MOEAD_Settings(problemName).configure(parameters[0]);
+        algorithm[1] = new MOEADEA_Settings(problemName).configure(parameters[1]);
+        
       } catch (IllegalArgumentException ex) {
       Logger.getLogger(StandardStudy.class.getName()).log(Level.SEVERE, null, ex);
     } catch (IllegalAccessException ex) {

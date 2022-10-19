@@ -72,7 +72,7 @@ public class MOEAD_Settings extends Settings {
     CR_ = 1.0 ;
     F_  = 0.5 ;
     populationSize_ = 300;
-    maxEvaluations_ = 150000;
+    maxEvaluations_ = 30000;
    
     mutationProbability_ = 1.0/problem_.getNumberOfVariables() ;
     mutationDistributionIndex_ = 20;
@@ -86,7 +86,7 @@ public class MOEAD_Settings extends Settings {
     // on CEC09 Unconstrained MOP Test Instances Working Report CES-491, School 
     // of CS & EE, University of Essex, 02/2009.
     // http://dces.essex.ac.uk/staff/qzhang/MOEAcompetition/CEC09final/code/ZhangMOEADcode/moead0305.rar
-    dataDirectory_ =  "/Users/antelverde/Softw/pruebas/data/MOEAD_parameters/Weight" ;
+    dataDirectory_ =  "C:\\Users\\User\\eclipse-workspace\\ManyObjectiveESO\\resources\\weightVectorFiles\\moead" ;
   } // MOEAD_Settings
 
   /**
