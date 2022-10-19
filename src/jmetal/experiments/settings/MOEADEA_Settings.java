@@ -86,7 +86,7 @@ public class MOEADEA_Settings extends Settings {
     // on CEC09 Unconstrained MOP Test Instances Working Report CES-491, School 
     // of CS & EE, University of Essex, 02/2009.
     // http://dces.essex.ac.uk/staff/qzhang/MOEAcompetition/CEC09final/code/ZhangMOEADcode/moead0305.rar
-    dataDirectory_ =  "C:\\Users\\User\\eclipse-workspace\\ManyObjectiveESO\\resources\\weightVectorFiles\\moead" ;
+    dataDirectory_ =  "C:\\Users\\shaik\\eclipse-workspace\\ManyObjectiveESO\\resources\\weightVectorFiles\\moead" ;
   } // MOEAD_Settings
 
   /**

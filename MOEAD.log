@@ -2,21 +2,21 @@
 <!DOCTYPE log SYSTEM "logger.dtd">
 <log>
 <record>
-  <date>2022-10-18T19:26:12.678268500Z</date>
-  <millis>1666121172678</millis>
-  <nanos>268500</nanos>
+  <date>2022-10-19T17:45:30.627631500Z</date>
+  <millis>1666201530627</millis>
+  <nanos>631500</nanos>
   <sequence>0</sequence>
   <logger>jMetal</logger>
   <level>INFO</level>
   <class>jmetal.metaheuristics.moead.MOEAD_main</class>
   <method>main</method>
   <thread>1</thread>
-  <message>Total execution time: 412ms</message>
+  <message>Total execution time: 415ms</message>
 </record>
 <record>
-  <date>2022-10-18T19:26:12.781523900Z</date>
-  <millis>1666121172781</millis>
-  <nanos>523900</nanos>
+  <date>2022-10-19T17:45:30.732351100Z</date>
+  <millis>1666201530732</millis>
+  <nanos>351100</nanos>
   <sequence>1</sequence>
   <logger>jMetal</logger>
   <level>INFO</level>
@@ -26,9 +26,9 @@
   <message>Objectives values have been writen to file FUN</message>
 </record>
 <record>
-  <date>2022-10-18T19:26:12.792237Z</date>
-  <millis>1666121172792</millis>
-  <nanos>237000</nanos>
+  <date>2022-10-19T17:45:30.748308900Z</date>
+  <millis>1666201530748</millis>
+  <nanos>308900</nanos>
   <sequence>2</sequence>
   <logger>jMetal</logger>
   <level>INFO</level>

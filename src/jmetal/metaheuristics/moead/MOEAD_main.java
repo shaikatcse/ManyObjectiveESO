@@ -92,13 +92,13 @@ public class MOEAD_main {
       //problem = new Kursawe("Real", 3); 
       //problem = new Kursawe("BinaryReal", 3);
       //problem = new Water("Real");
-      problem = new ZDT3("Real", 20);
+      //problem = new ZDT3("Real", 20);
       //problem = new ConstrEx("Real");
-      //problem = new DTLZ3("Real", 12, 4);
+      problem = new DTLZ3("Real", 12, 4);
       //problem = new OKA2("Real") ;
     } // else
 
-    algorithm = new MOEADEA(problem);
+    algorithm = new MOEADEA1(problem);
     //algorithm = new MOEAD_DRA(problem);
     
     // Algorithm parameters
@@ -111,7 +111,7 @@ public class MOEAD_main {
     // of CS & EE, University of Essex, 02/2009.
     // http://dces.essex.ac.uk/staff/qzhang/MOEAcompetition/CEC09final/code/ZhangMOEADcode/moead0305.rar
     algorithm.setInputParameter("dataDirectory",
-    "C:/Users/shaik/eclipse-workspace/jmetal511/jMetal/resources/weightVectorFiles/moead");
+    "C:\\\\Users\\\\shaik\\\\eclipse-workspace\\\\ManyObjectiveESO\\\\resources\\\\weightVectorFiles\\\\moead");
 
     //algorithm.setInputParameter("finalSize", 300) ; // used by MOEAD_DRA
 

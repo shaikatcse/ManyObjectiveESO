@@ -64,11 +64,10 @@ public class MOEADStandardStudy extends Experiment {
           parameters[i].put("paretoFrontFile_", paretoFrontFile_[problemIndex]);
         } // if
 
-        algorithm[0] = new NSGAII_Settings(problemName).configure(parameters[0]);
-        algorithm[1] = new SPEA2_Settings(problemName).configure(parameters[1]);
-        algorithm[2] = new MOCell_Settings(problemName).configure(parameters[2]);
-        algorithm[3] = new SMPSO_Settings(problemName).configure(parameters[3]);
-        algorithm[4] = new GDE3_Settings(problemName).configure(parameters[4]);
+        algorithm[0] = new MOEAD_Settings(problemName).configure(parameters[0]);
+        algorithm[1] = new MOEADEA_Settings(problemName).configure(parameters[1]);
+        algorithm[2] = new MOEADEA1_Settings(problemName).configure(parameters[2]);
+        
       } catch (IllegalArgumentException ex) {
       Logger.getLogger(StandardStudy.class.getName()).log(Level.SEVERE, null, ex);
     } catch (IllegalAccessException ex) {
@@ -85,11 +84,11 @@ public class MOEADStandardStudy extends Experiment {
    * @throws IOException
    */
   public static void main(String[] args) throws JMException, IOException {
-    StandardStudy exp = new StandardStudy();
+    MOEADStandardStudy exp = new MOEADStandardStudy();
 
     exp.experimentName_ = "MOEADStandardStudy";
     exp.algorithmNameList_ = new String[]{
-                                "MOEAD", "MOEADEA2"};
+                                "MOEAD", "MOEADEA", "MOEADEA1"};
     exp.problemList_ = new String[]{
                                     /*"WFG1","WFG2","WFG3","WFG4","WFG5","WFG6",
                                     "WFG7","WFG8","WFG9",*/
@@ -106,9 +105,9 @@ public class MOEADStandardStudy extends Experiment {
 
     int numberOfAlgorithms = exp.algorithmNameList_.length;
 
-    exp.experimentBaseDirectory_ = "C:\\Users\\User\\eclipse-workspace\\ManyObjectiveESO\\MOEADResults" +
+    exp.experimentBaseDirectory_ = "C:\\Users\\shaik\\eclipse-workspace\\ManyObjectiveESO\\MOEADResults" +
                                    exp.experimentName_;
-    exp.paretoFrontDirectory_ = "C:\\Users\\User\\eclipse-workspace\\ManyObjectiveESO\\resources\\referenceFronts";
+    exp.paretoFrontDirectory_ = "C:\\Users\\shaik\\eclipse-workspace\\ManyObjectiveESO\\resources\\referenceFronts";
 
     exp.algorithmSettings_ = new Settings[numberOfAlgorithms];
 

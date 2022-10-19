@@ -159,7 +159,7 @@ public class MOEADEA extends MOEAD {
 
         offSpring.add(new Everything(child, type, n));
         
-        evaluations_++;
+          evaluations_++;
 
         // STEP 2.3. Repair. Not necessary
 
