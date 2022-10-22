@@ -38,7 +38,7 @@ import jmetal.util.JMException;
   * @param solutionType The solution type must "Real" or "BinaryReal". 
   */
   public DTLZ6(String solutionType) throws ClassNotFoundException {
-    this(solutionType, 12, 3);
+    this(solutionType, 12, 4);
   } // DTLZ6
 
  /**

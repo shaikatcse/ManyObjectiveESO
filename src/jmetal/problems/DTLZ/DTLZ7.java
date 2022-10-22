@@ -38,7 +38,7 @@ public class DTLZ7 extends Problem{
   * @param solutionType The solution type must "Real" or "BinaryReal". 
   */
   public DTLZ7(String solutionType) throws ClassNotFoundException {
-    this(solutionType, 22, 3);
+    this(solutionType, 22, 4);
   } // DTLZ7
     
  /**

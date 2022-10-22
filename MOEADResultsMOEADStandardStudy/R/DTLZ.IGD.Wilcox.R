@@ -74,9 +74,9 @@ printTableLine <- function(indicator, algorithm1, algorithm2, i, j, problem) {
 ### START OF SCRIPT 
 # Constants
 problemList <-c("DTLZ1", "DTLZ2", "DTLZ3", "DTLZ4", "DTLZ5", "DTLZ6", "DTLZ7") 
-algorithmList <-c("MOEAD", "MOEADEA", "MOEADEA1") 
-tabularString <-c("lcc") 
-latexTableFirstLine <-c("\\hline  & MOEADEA & MOEADEA1\\\\ ") 
+algorithmList <-c("MOEAD", "MOEADEA11", "MOEADEA15", "MOEADEA33", "MOEADEA55", "MOEADGenEA") 
+tabularString <-c("lccccc") 
+latexTableFirstLine <-c("\\hline  & MOEADEA11 & MOEADEA15 & MOEADEA33 & MOEADEA55 & MOEADGenEA\\\\ ") 
 indicator<-"IGD"
 
  # Step 1.  Writes the latex header
@@ -87,7 +87,7 @@ for (problem in problemList) {
 
   indx = 0
   for (i in algorithmList) {
-    if (i != "MOEADEA1") {
+    if (i != "MOEADGenEA") {
       write(i , "C:\Users\shaik\eclipse-workspace\ManyObjectiveESO\MOEADResultsMOEADStandardStudy/R/DTLZ.IGD.Wilcox.tex", append=TRUE)
       write(" & ", "C:\Users\shaik\eclipse-workspace\ManyObjectiveESO\MOEADResultsMOEADStandardStudy/R/DTLZ.IGD.Wilcox.tex", append=TRUE)
       jndx = 0 
@@ -99,7 +99,7 @@ for (problem in problemList) {
           else {
             write("  ", "C:\Users\shaik\eclipse-workspace\ManyObjectiveESO\MOEADResultsMOEADStandardStudy/R/DTLZ.IGD.Wilcox.tex", append=TRUE)
           }
-          if (j != "MOEADEA1") {
+          if (j != "MOEADGenEA") {
             write(" & ", "C:\Users\shaik\eclipse-workspace\ManyObjectiveESO\MOEADResultsMOEADStandardStudy/R/DTLZ.IGD.Wilcox.tex", append=TRUE)
           }
           else {
@@ -115,16 +115,16 @@ for (problem in problemList) {
   latexTableTail()
 } # for problem
 
-tabularString <-c("| l | p{0.15cm}  p{0.15cm}  p{0.15cm}  p{0.15cm}  p{0.15cm}  p{0.15cm}  p{0.15cm}   | p{0.15cm}  p{0.15cm}  p{0.15cm}  p{0.15cm}  p{0.15cm}  p{0.15cm}  p{0.15cm}   | ") 
+tabularString <-c("| l | p{0.15cm}  p{0.15cm}  p{0.15cm}  p{0.15cm}  p{0.15cm}  p{0.15cm}  p{0.15cm}   | p{0.15cm}  p{0.15cm}  p{0.15cm}  p{0.15cm}  p{0.15cm}  p{0.15cm}  p{0.15cm}   | p{0.15cm}  p{0.15cm}  p{0.15cm}  p{0.15cm}  p{0.15cm}  p{0.15cm}  p{0.15cm}   | p{0.15cm}  p{0.15cm}  p{0.15cm}  p{0.15cm}  p{0.15cm}  p{0.15cm}  p{0.15cm}   | p{0.15cm}  p{0.15cm}  p{0.15cm}  p{0.15cm}  p{0.15cm}  p{0.15cm}  p{0.15cm}   | ") 
 
-latexTableFirstLine <-c("\\hline \\multicolumn{1}{|c|}{} & \\multicolumn{7}{c|}{MOEADEA} & \\multicolumn{7}{c|}{MOEADEA1} \\\\") 
+latexTableFirstLine <-c("\\hline \\multicolumn{1}{|c|}{} & \\multicolumn{7}{c|}{MOEADEA11} & \\multicolumn{7}{c|}{MOEADEA15} & \\multicolumn{7}{c|}{MOEADEA33} & \\multicolumn{7}{c|}{MOEADEA55} & \\multicolumn{7}{c|}{MOEADGenEA} \\\\") 
 
 # Step 3. Problem loop 
 latexTableHeader("DTLZ1 DTLZ2 DTLZ3 DTLZ4 DTLZ5 DTLZ6 DTLZ7 ", tabularString, latexTableFirstLine)
 
 indx = 0
 for (i in algorithmList) {
-  if (i != "MOEADEA1") {
+  if (i != "MOEADGenEA") {
     write(i , "C:\Users\shaik\eclipse-workspace\ManyObjectiveESO\MOEADResultsMOEADStandardStudy/R/DTLZ.IGD.Wilcox.tex", append=TRUE)
     write(" & ", "C:\Users\shaik\eclipse-workspace\ManyObjectiveESO\MOEADResultsMOEADStandardStudy/R/DTLZ.IGD.Wilcox.tex", append=TRUE)
 
@@ -139,7 +139,7 @@ for (i in algorithmList) {
             write("  ", "C:\Users\shaik\eclipse-workspace\ManyObjectiveESO\MOEADResultsMOEADStandardStudy/R/DTLZ.IGD.Wilcox.tex", append=TRUE)
           } 
           if (problem == "DTLZ7") {
-            if (j == "MOEADEA1") {
+            if (j == "MOEADGenEA") {
               write(" \\\\ ", "C:\Users\shaik\eclipse-workspace\ManyObjectiveESO\MOEADResultsMOEADStandardStudy/R/DTLZ.IGD.Wilcox.tex", append=TRUE)
             } 
             else {

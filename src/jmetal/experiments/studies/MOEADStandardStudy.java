@@ -65,8 +65,14 @@ public class MOEADStandardStudy extends Experiment {
         } // if
 
         algorithm[0] = new MOEAD_Settings(problemName).configure(parameters[0]);
-        algorithm[1] = new MOEADEA_Settings(problemName).configure(parameters[1]);
-        algorithm[2] = new MOEADEA1_Settings(problemName).configure(parameters[2]);
+         algorithm[1] = new MOEADEA11_Settings(problemName).configure(parameters[1]);
+         algorithm[2] = new MOEADEA15_Settings(problemName).configure(parameters[2]);
+         algorithm[3] = new MOEADEA33_Settings(problemName).configure(parameters[3]);
+         algorithm[4] = new MOEADEA55_Settings(problemName).configure(parameters[4]);
+         algorithm[5] = new MOEADGenEA_Settings(problemName).configure(parameters[5]);
+         
+         
+         
         
       } catch (IllegalArgumentException ex) {
       Logger.getLogger(StandardStudy.class.getName()).log(Level.SEVERE, null, ex);
@@ -88,7 +94,7 @@ public class MOEADStandardStudy extends Experiment {
 
     exp.experimentName_ = "MOEADStandardStudy";
     exp.algorithmNameList_ = new String[]{
-                                "MOEAD", "MOEADEA", "MOEADEA1"};
+                                "MOEAD", "MOEADEA11", "MOEADEA15", "MOEADEA33", "MOEADEA55", "MOEADGenEA"};
     exp.problemList_ = new String[]{
                                     /*"WFG1","WFG2","WFG3","WFG4","WFG5","WFG6",
                                     "WFG7","WFG8","WFG9",*/
@@ -97,9 +103,9 @@ public class MOEADStandardStudy extends Experiment {
     exp.paretoFrontFile_ = new String[]{ /*"WFG1.2D.pf","WFG2.2D.pf","WFG3.2D.pf",
                                     "WFG4.2D.pf","WFG5.2D.pf","WFG6.2D.pf",
                                     "WFG7.2D.pf","WFG8.2D.pf","WFG9.2D.pf",*/
-                                    "DTLZ1.3D.pf","DTLZ2.3D.pf","DTLZ3.3D.pf",
-                                    "DTLZ4.3D.pf","DTLZ5.3D.pf","DTLZ6.3D.pf",
-                                    "DTLZ7.3D.pf"};
+                                    "DTLZ1.4D.pf","DTLZ2.4D.pf","DTLZ3.4D.pf",
+                                    "DTLZ4.4D.pf","DTLZ5.4D.pf","DTLZ6.4D.pf",
+                                    "DTLZ7.4D.pf"};
 
     exp.indicatorList_ = new String[]{"HV", "IGD", };
 

@@ -71,8 +71,8 @@ public class MOEAD_Settings extends Settings {
     // Default experiments.settings
     CR_ = 1.0 ;
     F_  = 0.5 ;
-    populationSize_ = 300;
-    maxEvaluations_ = 30000;
+    populationSize_ = 165;
+    maxEvaluations_ = 27225;
    
     mutationProbability_ = 1.0/problem_.getNumberOfVariables() ;
     mutationDistributionIndex_ = 20;
