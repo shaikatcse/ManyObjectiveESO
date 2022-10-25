@@ -70,7 +70,7 @@ public class MaOOCEIS4DMain {
 		// long seed[]={102354,986587,456987,159753,
 		// 216557,589632,471259,523486,4158963,745896};
 
-		String[] algorithms = {"NSGAII", "SPEA2", "MOEAD"};
+		String[] algorithms = {/*"NSGAII", "SPEA2", */"MOEAD"};
 		String baseDirectory = ".\\Results\\MaOOCEIS4D\\UnConstrained\\";
 		File baseDirectoryfile = new File(baseDirectory);
 		baseDirectoryfile.mkdirs();
