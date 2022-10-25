@@ -49,7 +49,7 @@ public class NSGAIII extends Algorithm {
 	} // NSGAII constructor end
 
 	protected void initProgress() {
-		evaluations = 1;
+		evaluations = 0;
 	}
 
 	protected void updateProgress() {
@@ -215,15 +215,16 @@ public class NSGAIII extends Algorithm {
 		List<Solution> offspringPopulation;
 		List<Solution> matingPopulation;
 
+		initProgress();
 		population = createInitialPopulation();
 		population = evaluatePopulation(population);
-		initProgress();
+	
 		while (!isStoppingConditionReached()) {
 			matingPopulation = selection(population);
 			offspringPopulation = reproduction(matingPopulation);
 			offspringPopulation = evaluatePopulation(offspringPopulation);
 			population = replacement(population, offspringPopulation);
-			System.out.println(evaluations);
+			//System.out.println(evaluations);
 		}
 		return convertListToSolutionSet(population);
 	}
