@@ -100,6 +100,9 @@ public class NSGAIII extends Algorithm {
 
 			offspringPopulation.add(offSpring[0]);
 			offspringPopulation.add(offSpring[1]);
+			
+			evaluations=evaluations+2;
+			
 		}
 		return offspringPopulation;
 	}
@@ -220,7 +223,7 @@ public class NSGAIII extends Algorithm {
 			offspringPopulation = reproduction(matingPopulation);
 			offspringPopulation = evaluatePopulation(offspringPopulation);
 			population = replacement(population, offspringPopulation);
-			updateProgress();
+			System.out.println(evaluations);
 		}
 		return convertListToSolutionSet(population);
 	}
