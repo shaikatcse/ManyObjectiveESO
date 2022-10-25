@@ -37,7 +37,8 @@ public class EnvironmentalSelection {
       double minf = Double.MAX_VALUE;
       for (int i = 0; i < fronts.get(0).size(); i += 1) // min values must appear in the first front
       {
-        minf = Math.min(minf, fronts.get(0).get(i).getObjective(f));
+    	  if(fronts.get(0).get(i).getOverallConstraintViolation() >= 0)
+    		  minf = Math.min(minf, fronts.get(0).get(i).getObjective(f));
       }
       ideal_point.add(minf);
 
@@ -80,13 +81,15 @@ public class EnvironmentalSelection {
     for (int f = 0; f < numberOfObjectives; f += 1) {
       double min_ASF = Double.MAX_VALUE;
       for (Solution s : fronts.get(0)) { // only consider the individuals in the first front
-        double asf = ASF(s, f);
-        if (asf < min_ASF) {
-          min_ASF = asf;
-          min_indv = s;
+        if(s.getOverallConstraintViolation()>=0) {
+    	  double asf = ASF(s, f);
+    	  if (asf < min_ASF) {
+    		  min_ASF = asf;
+    		  min_indv = s;
+    	  }
+      
         }
       }
-
       extremePoints.add(min_indv);
     }
     return extremePoints;

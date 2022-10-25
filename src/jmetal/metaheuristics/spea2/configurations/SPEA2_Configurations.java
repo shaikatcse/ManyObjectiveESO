@@ -62,9 +62,9 @@ public class SPEA2_Configurations  {
       this.problem_ = problem;
         
 
-    populationSize_           = 300   ;
-    archiveSize_              = 300   ;
-    maxEvaluations_           = 30000 ;
+    populationSize_           = 168   ;
+    archiveSize_              = 168   ;
+    maxEvaluations_           = 16800 ;
     mutationProbability_   = 1.0/problem_.getNumberOfVariables() ;
     crossoverProbability_  = 0.9   ;
     crossoverDistributionIndex_ = 20.0  ;
