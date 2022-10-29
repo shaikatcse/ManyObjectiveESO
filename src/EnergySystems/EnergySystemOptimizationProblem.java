@@ -39,9 +39,24 @@ public abstract class EnergySystemOptimizationProblem extends Problem{
 	}
 
 	
-	public abstract MultiMap createModificationFiles(Solution solution, int serial) throws JMException ;
+	public MultiMap createModificationFiles(Solution solution, int serial) throws JMException {
 
+		MultiMap modifyMap = new MultiValueMap();
+
+		try {
+			modifyMap = writeIntoInputFile(solution, ".\\modifiedInput" + serial);
+		}catch(IOException e) {
+			System.out.print("Pobrlem writting in modified Input file");
+		}
+
+		return modifyMap;
+	}
 	
+	
+	
+	public abstract  MultiMap writeIntoInputFile(Solution solution, String fileName) throws IOException, JMException;
+	
+
 	public abstract void extractInformation(Solution solution, MultiMap modifyMap, int serial) throws JMException;
 	
 	

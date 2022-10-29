@@ -106,7 +106,7 @@ public class MOEADEA15_Configurations  {
     HashMap  parameters ; // Operator parameters
 
     // Creating the problem
-    algorithm = new MOEAD(problem);
+    algorithm = new MOEADEA15(problem);
 
     // Algorithm parameters
     algorithm.setInputParameter("populationSize", populationSize_);

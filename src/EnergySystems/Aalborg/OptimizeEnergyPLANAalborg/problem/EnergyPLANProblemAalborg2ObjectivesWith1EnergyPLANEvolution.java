@@ -1,4 +1,4 @@
-package reet.fbk.eu.OptimizeEnergyPLANAalborg.problem;
+package EnergySystems.Aalborg.OptimizeEnergyPLANAalborg.problem;
 
 import jmetal.core.Problem;
 import jmetal.core.Solution;
@@ -19,12 +19,16 @@ import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
 import java.util.StringTokenizer;
+
+
+import EnergySystems.Aalborg.OptimizeEnergyPLANAalborg.parse.EnergyPLANFileParseForAalborg;
 
 import org.apache.commons.collections.MultiMap;
 import org.apache.commons.collections.map.MultiValueMap;
 
-import reet.fbk.eu.OprimizeEnergyPLAN.file.parse.EnergyPLANFileParse;
 
 /*
  * Two problems are solved in this version
@@ -132,8 +136,8 @@ public class EnergyPLANProblemAalborg2ObjectivesWith1EnergyPLANEvolution extends
 	public void evaluate(Solution solution) throws JMException {
 
 		writeModificationFile(solution);
-		String energyPLANrunCommand = ".\\EnergyPLAN_SEP_2013\\EnergyPLAN.exe -i "
-				+ "\".\\src\\reet\\fbk\\eu\\OptimizeEnergyPLANAalborg\\Aalborg_2050_Plan_A_44%ForOptimization_2objctives.txt\" "
+		String energyPLANrunCommand = ".\\EnergyPLAN161\\EnergyPLAN.exe -i "
+				+ "\"./src/EnergySystems/Aalborg/OptimizeEnergyPLANAalborg/Aalborg_2050_Plan_A_44%ForOptimization_2objctives.txt\" "
 				+ "-m \"modification.txt\" -ascii \"result.txt\" ";
 		try {
 			// Process process = new
@@ -141,20 +145,20 @@ public class EnergyPLANProblemAalborg2ObjectivesWith1EnergyPLANEvolution extends
 			Process process = Runtime.getRuntime().exec(energyPLANrunCommand);
 			process.waitFor();
 			process.destroy();
-			EnergyPLANFileParse epfp = new EnergyPLANFileParse(".\\result.txt");
+			EnergyPLANFileParseForAalborg epfp = new EnergyPLANFileParseForAalborg(".\\result.txt");
 			energyplanmMap = epfp.parseFile();
-
+			
 			Iterator it;
 			Collection<String> col;
 
 			// extracting maximum Boiler configuration (group # 3)
 			col = (Collection<String>) energyplanmMap
-					.get("Maximumboilerheat r");
+					.get("Annual MaximumBoiler 3Heat");
 			it = col.iterator();
 			double maximumBoilerGroup3 = Double.parseDouble(it.next()
 					.toString());
 			// extracting maximum PP configuration
-			col = (Collection<String>) energyplanmMap.get("Maximumppelec.");
+			col = (Collection<String>) energyplanmMap.get("Annual MaximumPP2Electr.");
 			it = col.iterator();
 			double maximumPP = Double.parseDouble(it.next().toString());
 			// if chp>PP, do a 2nd evolution with energyplan where chp=pp
@@ -181,7 +185,7 @@ public class EnergyPLANProblemAalborg2ObjectivesWith1EnergyPLANEvolution extends
 					process = Runtime.getRuntime().exec(energyPLANrunCommand);
 					process.waitFor();
 					process.destroy();
-					epfp = new EnergyPLANFileParse(".\\result.txt");
+					epfp = new EnergyPLANFileParseForAalborg(".\\result.txt");
 					energyplanmMap = epfp.parseFile();
 
 					// objective # 1

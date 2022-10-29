@@ -185,8 +185,8 @@ public class NSGAIII extends Algorithm {
 		Solution newSolution;
 		for (int i = 0; i < populationSize; i++) {
 			newSolution = new Solution(problem_);
-			problem_.evaluate(newSolution);
-			problem_.evaluateConstraints(newSolution);
+			//problem_.evaluate(newSolution);
+			//problem_.evaluateConstraints(newSolution);
 			evaluations++;
 			population.add(newSolution);
 		}

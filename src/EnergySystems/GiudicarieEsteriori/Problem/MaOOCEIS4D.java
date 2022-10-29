@@ -141,22 +141,7 @@ public class MaOOCEIS4D extends EnergySystemOptimizationProblem {
 	} // constructor end
 
 	@Override
-	public MultiMap createModificationFiles(Solution solution, int serial) throws JMException {
-
-		MultiMap modifyMap = new MultiValueMap();
-
-		try {
-			modifyMap = writeIntoInputFile(solution, ".\\modifiedInput" + serial
-
-			);
-		} catch (IOException e) {
-			System.out.print("Pobrlem writting in modified Input file");
-		}
-
-		return modifyMap;
-	}
-	
-	MultiMap writeIntoInputFile(final Solution s, String fileName) throws IOException, JMException {
+	public MultiMap writeIntoInputFile(final Solution s, String fileName) throws IOException, JMException {
 
 	
 		MultiMap modifyMap = new MultiValueMap();

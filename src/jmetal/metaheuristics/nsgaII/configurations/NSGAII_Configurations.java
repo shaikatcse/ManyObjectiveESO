@@ -59,8 +59,8 @@ public class NSGAII_Configurations {
 	    Object [] problemParams = {"Real"};
 	      this.problem = problem;
 	  // Default experiments.settings
-	    populationSize_              = 10   ;
-	    maxEvaluations_              = 100 ;
+	    populationSize_              = 168   ;
+	    maxEvaluations_              = 16800 ;
 	    mutationProbability_         = 1.0/problem.getNumberOfVariables() ;
 	    crossoverProbability_        = 0.9   ;
 	    mutationDistributionIndex_   = 20.0  ;

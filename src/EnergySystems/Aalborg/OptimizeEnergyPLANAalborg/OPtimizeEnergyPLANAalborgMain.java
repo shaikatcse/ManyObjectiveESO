@@ -1,4 +1,4 @@
-package reet.fbk.eu.OptimizeEnergyPLANAalborg;
+package EnergySystems.Aalborg.OptimizeEnergyPLANAalborg;
 
 import java.io.BufferedWriter;
 import java.io.FileOutputStream;
@@ -21,12 +21,8 @@ import jmetal.util.JMException;
 import jmetal.util.PseudoRandom;
 import jmetal.util.RandomGenerator;
 import jmetal.operators.mutation.MutationFactory;
-import reet.fbk.eu.OptimizeEnergyPLANAalborg.problem.EnergyPLANProblemAalborg;
-import reet.fbk.eu.OptimizeEnergyPLANAalborg.problem.EnergyPLANProblemAalborg2Objectives;
-import reet.fbk.eu.jmetal.metaheuristics.nsgaII.NSGAIIForDK;
-//import reet.fbk.eu.jmetal.operators.mutation.MutationFactory;
 
-import reet.fbk.eu.jmetal.metaheuristics.spea2.SPEA2ForDK;
+import EnergySystems.Aalborg.OptimizeEnergyPLANAalborg.problem.*;
 
 import java.util.logging.FileHandler;
 import java.util.logging.Logger;
@@ -69,7 +65,7 @@ public class OPtimizeEnergyPLANAalborgMain {
 			indicators = null;
 
 			//problems for 2 objectives
-			problem=new EnergyPLANProblemAalborg2Objectives("Real");
+			problem=new EnergyPLANProblemAalborg2ObjectivesWith1EnergyPLANEvolution("Real");
 			
 			//problem for 3 objectives
 			//problem = new EnergyPLANProblemAalborg("Real");
