@@ -12,10 +12,12 @@ import jmetal.util.wrapper.XReal;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.text.DecimalFormat;
 import java.util.Collection;
 import java.util.Iterator;
@@ -25,10 +27,10 @@ import java.util.StringTokenizer;
 
 import EnergySystems.EnergySystemOptimizationProblem;
 import EnergySystems.Aalborg.OptimizeEnergyPLANAalborg.parse.EnergyPLANFileParseForAalborg;
+import EnergySystems.GiudicarieEsteriori.ParseFile.EnergyPLANFileParseForCivis;
 
 import org.apache.commons.collections.MultiMap;
 import org.apache.commons.collections.map.MultiValueMap;
-
 
 /*
  * Two problems are solved in this version
@@ -42,8 +44,7 @@ public class MaOOAalborg4D extends EnergySystemOptimizationProblem {
 	// large Value for boiler & PP and other information
 	int largeValueOfBoiler = 1500, largeValueOfPP = 1000;
 	int boilerLifeTime = 20, PPLifeTime = 30;
-	double interest = 0.03, fixedMOForBoilerinPercentage = 0.03,
-			fixedMOForPPinPercentage = 0.02;
+	double interest = 0.03, fixedMOForBoilerinPercentage = 0.03, fixedMOForPPinPercentage = 0.02;
 	double boilerCostInMDDK = 1.0, PPCostInMDKK = 0.0;
 
 	/**
@@ -54,8 +55,7 @@ public class MaOOAalborg4D extends EnergySystemOptimizationProblem {
 	 * @param solutionType
 	 *            The solution type must "Real", "BinaryReal, and "ArrayReal".
 	 */
-	public MaOOAalborg4D(
-			String solutionType) {
+	public MaOOAalborg4D(String solutionType) {
 		numberOfVariables_ = 7;
 		numberOfObjectives_ = 2;
 		numberOfConstraints_ = 3;
@@ -99,13 +99,12 @@ public class MaOOAalborg4D extends EnergySystemOptimizationProblem {
 		upperLimit_[6] = 10000.0;
 
 		/*
-		 * // capacity of heat storage group 3 lowerLimit_[var] = 0.0;
-		 * upperLimit_[var] = 5.0;
+		 * // capacity of heat storage group 3 lowerLimit_[var] = 0.0; upperLimit_[var]
+		 * = 5.0;
 		 * 
-		 * //capacity for boiler, its a dummy, the value will be set in
-		 * evaluation methods //the boiler capacity do not need to be optimize,
-		 * it is just use here to point the value lowerLimit_[7]=0.0;
-		 * upperLimit_[7]=10000.0;
+		 * //capacity for boiler, its a dummy, the value will be set in evaluation
+		 * methods //the boiler capacity do not need to be optimize, it is just use here
+		 * to point the value lowerLimit_[7]=0.0; upperLimit_[7]=10000.0;
 		 */
 
 		/*
@@ -118,11 +117,262 @@ public class MaOOAalborg4D extends EnergySystemOptimizationProblem {
 		if (solutionType.compareTo("Real") == 0)
 			solutionType_ = new RealSolutionType(this);
 		else {
-			System.out.println("Error: solution type " + solutionType
-					+ " invalid");
+			System.out.println("Error: solution type " + solutionType + " invalid");
 			System.exit(-1);
 		}
 	} // constructor end
+
+	@Override
+	public MultiMap writeIntoInputFile(Solution s, String fileName) throws IOException, JMException {
+
+		MultiMap modifyMap = new MultiValueMap();
+
+		File modifiedInput = new File(".\\EnergyPLAN161\\spool\\" + fileName + ".txt");
+		if (modifiedInput.exists()) {
+			modifiedInput.delete();
+		}
+		modifiedInput.createNewFile();
+
+		FileWriter fw = new FileWriter(modifiedInput.getAbsoluteFile());
+		BufferedWriter modifiedInputbw = new BufferedWriter(fw);
+
+		String path = ".\\EnergyPLAN161\\energyPlan Data\\Data\\Aalborg_2050_Plan_A_44%ForOptimization_2objctives.txt";
+
+		BufferedReader mainInputbr = new BufferedReader(new InputStreamReader(new FileInputStream(path), "UTF-16"));
+
+
+		// CHP group 3
+		double CHPGr3 = s.getDecisionVariables()[0].getValue();
+
+		// HP group 3
+		double HPGr3 = s.getDecisionVariables()[1].getValue();
+
+		// PP
+		// double PP = solution.getDecisionVariables()[2].getValue();
+
+		// wind
+		double wind = s.getDecisionVariables()[3].getValue();
+		// off-shore wind
+		double offShoreWind = s.getDecisionVariables()[4].getValue();
+		// PV
+		double PV = s.getDecisionVariables()[5].getValue();
+
+		modifyMap.put("CHPGr3", CHPGr3);
+		modifyMap.put("HPGr3", HPGr3);
+		modifyMap.put("Wind", wind);
+		modifyMap.put("OffShoreWind", offShoreWind);
+		modifyMap.put("PV", PV);
+
+		String modifiedParameters[] = { 
+				"input_cap_chp3_el=", // chp3 (0)
+				"input_cap_hp3_el=", // 1
+				"input_cap_hp3_el=", // 2 wind
+				"input_RES2_capacity=", // 3 offshorewind
+				"input_RES3_capacity=", // 4 //PV
+				
+		};
+		String cooresPondingValues[] = new String[modifiedParameters.length];
+		int index = 0;
+		cooresPondingValues[index++] = "" + CHPGr3;
+		cooresPondingValues[index++] = "" + HPGr3;
+		cooresPondingValues[index++] = "" + wind;
+		cooresPondingValues[index++] = "" + offShoreWind;
+		cooresPondingValues[index++] = "" + PV;
+	
+		String line;
+		while ((line = mainInputbr.readLine()) != null) {
+			line.trim();
+			boolean trackBreak=false;
+			for (int i = 0; i < modifiedParameters.length; i++) {
+				if (line.startsWith(modifiedParameters[i]) || line.endsWith(modifiedParameters[i])) {
+					modifiedInputbw.write(line+"\n" );
+					line = mainInputbr.readLine();
+					line=line.replace(line, cooresPondingValues[i]);
+					modifiedInputbw.write(line+"\n");
+					trackBreak=true;
+					break;
+				}
+			}
+			if(trackBreak)
+				continue;
+			else
+				modifiedInputbw.write(line+"\n");
+
+		}
+		
+		modifiedInputbw.close();
+		mainInputbr.close();
+
+		
+		return modifyMap;
+
+	}
+
+	@Override
+	public void extractInformation(Solution solution, MultiMap modifyMap, int serial) throws JMException {
+		
+		EnergyPLANFileParseForAalborg epfp = new EnergyPLANFileParseForAalborg(".\\EnergyPLAN161\\spool\\results\\modifiedInput"+serial+".txt.txt");
+		energyplanmMap = epfp.parseFile();
+
+		Iterator it;
+		Collection<String> col;
+
+		// extracting maximum Boiler configuration (group # 3)
+		col = (Collection<String>) energyplanmMap.get("Annual MaximumBoiler 3Heat");
+		it = col.iterator();
+		double maximumBoilerGroup3 = Double.parseDouble(it.next().toString());
+		// extracting maximum PP configuration
+		col = (Collection<String>) energyplanmMap.get("Annual MaximumPP2Electr.");
+		it = col.iterator();
+		double maximumPP = Double.parseDouble(it.next().toString());
+		// if chp>PP, do a 2nd evolution with energyplan where chp=pp
+		if (solution.getDecisionVariables()[0].getValue() > maximumPP) {
+			/*
+			 * 1. make chp = pp 2. evaluate with energyPLAN
+			 */
+
+			// chp=pp
+			solution.getDecisionVariables()[0].setValue(maximumPP);
+
+			// set the decision variable according to the maximum pp
+			// capacity
+			solution.getDecisionVariables()[2].setValue(maximumPP);
+
+			// set the decision variable according to the maximum boiler
+			// capacity
+			solution.getDecisionVariables()[6].setValue(maximumBoilerGroup3);
+
+			writeModificationFile(solution, maximumBoilerGroup3, maximumPP);
+
+			try {
+				
+				String energyPLANrunCommand = ".\\EnergyPLAN161\\EnergyPLAN.exe -i "
+						+ "\"./src/EnergySystems/Aalborg/OptimizeEnergyPLANAalborg/Aalborg_2050_Plan_A_44%ForOptimization_2objctives.txt\" "
+						+ "-m \"modification.txt\" -ascii \"result.txt\" ";
+
+				Process process = Runtime.getRuntime().exec(energyPLANrunCommand);
+				process.waitFor();
+				process.destroy();
+				epfp = new EnergyPLANFileParseForAalborg(".\\result.txt");
+				energyplanmMap = epfp.parseFile();
+
+				// objective # 1
+				col = (Collection<String>) energyplanmMap.get("CO2-emission (corrected)");
+				it = col.iterator();
+				solution.setObjective(0, Double.parseDouble(it.next().toString()));
+				// objective # 2
+				col = (Collection<String>) energyplanmMap.get("TOTAL ANNUAL COSTS");
+				it = col.iterator();
+				solution.setObjective(1, Double.parseDouble(it.next().toString()));
+
+				// check warning
+				col = (Collection<String>) energyplanmMap.get("WARNING");
+				if (col != null) {
+					/*
+					 * System.out.println("No warning"); } else {
+					 */
+					@SuppressWarnings("rawtypes")
+					Iterator it3 = col.iterator();
+					String warning = it3.next().toString();
+					if (!warning.equals("PP too small. Critical import is needed")
+							&& !warning.equals("Grid Stabilisation requierments are NOT fullfilled"))
+						throw new IOException("warning!!" + warning);
+					// System.out.println("Warning " +
+					// it3.next().toString());
+
+				}
+			} catch (IOException e) {
+				System.out.println("Energyplan.exe has some problem");
+				e.printStackTrace();
+			} catch (InterruptedException e) {
+				System.out.println("Energyplan interrupted");
+			}
+		} else {
+			// just use numerical way to calculate annual cost
+			double reductionInvestmentCost = Math
+					.round(((largeValueOfBoiler - maximumBoilerGroup3) * boilerCostInMDDK * interest)
+							/ (1 - Math.pow((1 + interest), -boilerLifeTime))
+							+ ((largeValueOfPP - maximumPP) * PPCostInMDKK * interest)
+									/ (1 - Math.pow((1 + interest), -PPLifeTime)));
+
+			double reduceFixedOMCost = Math.round(
+					((largeValueOfBoiler - maximumBoilerGroup3) * boilerCostInMDDK * fixedMOForBoilerinPercentage)
+							+ ((largeValueOfPP - maximumPP) * PPCostInMDKK * fixedMOForPPinPercentage));
+			// objective # 1
+			col = (Collection<String>) energyplanmMap.get("CO2-emission (corrected)");
+			it = col.iterator();
+			solution.setObjective(0, Double.parseDouble(it.next().toString()));
+			// objective # 2
+			col = (Collection<String>) energyplanmMap.get("TOTAL ANNUAL COSTS");
+			it = col.iterator();
+			double tempAnnaulCost = Double.parseDouble(it.next().toString());
+			double actualAnnualCost = tempAnnaulCost - reductionInvestmentCost - reduceFixedOMCost;
+			solution.setObjective(1, actualAnnualCost);
+
+		
+			//constraints
+		
+
+			col = (Collection<String>) energyplanmMap.get("Maximumimport");
+			it = col.iterator();
+			int maximumImport = Integer.parseInt(it.next().toString());
+			col = (Collection<String>) energyplanmMap.get("Minimumstab.-load");
+			it = col.iterator();
+			int mimimumGridStabPercentage = Integer.parseInt(it.next().toString());
+
+			// constraints about heat3-balance: balance<=0
+			col = (Collection<String>) energyplanmMap.get("Annualheat3-balance");
+			it = col.iterator();
+			double annualHeat3Balance = Double.parseDouble(it.next().toString());
+
+			double constraints[] = new double[numberOfConstraints_];
+			constraints[0] = 160 - maximumImport;
+			constraints[1] = mimimumGridStabPercentage - 100;
+			constraints[2] = 0 - annualHeat3Balance;
+
+			double totalViolation = 0.0;
+			int numberOfViolation = 0;
+			for (int i = 0; i < numberOfConstraints_; i++) {
+				if (constraints[i] < 0.0) {
+					totalViolation += constraints[0];
+					numberOfViolation++;
+				}
+			}
+			/*
+			 * if (constraints[0] < 0.0) {
+			 * solution.setOverallConstraintViolation(constrints);
+			 * solution.setNumberOfViolatedConstraint(1);
+			 */
+
+			solution.setOverallConstraintViolation(totalViolation);
+			solution.setNumberOfViolatedConstraint(numberOfViolation);
+
+		
+		
+		}
+
+		col = (Collection<String>) energyplanmMap.get("WARNING");
+		if (col != null) {
+			/*
+			 * System.out.println("No warning"); } else {
+			 */
+			@SuppressWarnings("rawtypes")
+			Iterator it3 = col.iterator();
+			String warning = it3.next().toString();
+			if (!warning.equals("PP too small. Critical import is needed")
+					&& !warning.equals("Grid Stabilisation requierments are NOT fullfilled"))
+				try {
+					throw new IOException("warning!!" + warning);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			// System.out.println("Warning " + it3.next().toString());
+
+		}
+	}
+
+	
 
 	/**
 	 * Evaluates a solution.
@@ -134,190 +384,15 @@ public class MaOOAalborg4D extends EnergySystemOptimizationProblem {
 	@SuppressWarnings("unchecked")
 	public void evaluate(Solution solution) throws JMException {
 
-		writeModificationFile(solution);
-		String energyPLANrunCommand = ".\\EnergyPLAN161\\EnergyPLAN.exe -i "
-				+ "\"./src/EnergySystems/Aalborg/OptimizeEnergyPLANAalborg/Aalborg_2050_Plan_A_44%ForOptimization_2objctives.txt\" "
-				+ "-m \"modification.txt\" -ascii \"result.txt\" ";
-		try {
-			// Process process = new
-			// ProcessBuilder(energyPLANrunCommand).start();
-			Process process = Runtime.getRuntime().exec(energyPLANrunCommand);
-			process.waitFor();
-			process.destroy();
-			EnergyPLANFileParseForAalborg epfp = new EnergyPLANFileParseForAalborg(".\\result.txt");
-			energyplanmMap = epfp.parseFile();
-			
-			Iterator it;
-			Collection<String> col;
-
-			// extracting maximum Boiler configuration (group # 3)
-			col = (Collection<String>) energyplanmMap
-					.get("Annual MaximumBoiler 3Heat");
-			it = col.iterator();
-			double maximumBoilerGroup3 = Double.parseDouble(it.next()
-					.toString());
-			// extracting maximum PP configuration
-			col = (Collection<String>) energyplanmMap.get("Annual MaximumPP2Electr.");
-			it = col.iterator();
-			double maximumPP = Double.parseDouble(it.next().toString());
-			// if chp>PP, do a 2nd evolution with energyplan where chp=pp
-			if (solution.getDecisionVariables()[0].getValue() > maximumPP) {
-				/*
-				 * 1. make chp = pp 2. evaluate with energyPLAN
-				 */
-
-				// chp=pp
-				solution.getDecisionVariables()[0].setValue(maximumPP);
-
-				// set the decision variable according to the maximum pp
-				// capacity
-				solution.getDecisionVariables()[2].setValue(maximumPP);
-
-				// set the decision variable according to the maximum boiler
-				// capacity
-				solution.getDecisionVariables()[6]
-						.setValue(maximumBoilerGroup3);
-
-				writeModificationFile(solution, maximumBoilerGroup3, maximumPP);
-
-				try {
-					process = Runtime.getRuntime().exec(energyPLANrunCommand);
-					process.waitFor();
-					process.destroy();
-					epfp = new EnergyPLANFileParseForAalborg(".\\result.txt");
-					energyplanmMap = epfp.parseFile();
-
-					// objective # 1
-					col = (Collection<String>) energyplanmMap
-							.get("CO2-emission (corrected)");
-					it = col.iterator();
-					solution.setObjective(0,
-							Double.parseDouble(it.next().toString()));
-					// objective # 2
-					col = (Collection<String>) energyplanmMap
-							.get("TOTAL ANNUAL COSTS");
-					it = col.iterator();
-					solution.setObjective(1,
-							Double.parseDouble(it.next().toString()));
-
-					// check warning
-					col = (Collection<String>) energyplanmMap.get("WARNING");
-					if (col != null) {
-						/*
-						 * System.out.println("No warning"); } else {
-						 */
-						@SuppressWarnings("rawtypes")
-						Iterator it3 = col.iterator();
-						String warning = it3.next().toString();
-						if (!warning
-								.equals("PP too small. Critical import is needed")
-								&& !warning
-										.equals("Grid Stabilisation requierments are NOT fullfilled"))
-							throw new IOException("warning!!" + warning);
-						// System.out.println("Warning " +
-						// it3.next().toString());
-
-					}
-				} catch (IOException e) {
-					System.out.println("Energyplan.exe has some problem");
-					e.printStackTrace();
-				} catch (InterruptedException e) {
-					System.out.println("Energyplan interrupted");
-				}
-			} else {
-				// just use numerical way to calculate annual cost
-				double reductionInvestmentCost = Math.round(((largeValueOfBoiler - maximumBoilerGroup3)
-						* boilerCostInMDDK * interest)
-						/ (1 - Math.pow((1 + interest), -boilerLifeTime))
-						+ ((largeValueOfPP - maximumPP) * PPCostInMDKK * interest)
-						/ (1 - Math.pow((1 + interest), -PPLifeTime)));
-
-				double reduceFixedOMCost = Math.round(((largeValueOfBoiler - maximumBoilerGroup3)
-						* boilerCostInMDDK * fixedMOForBoilerinPercentage)
-						+ ((largeValueOfPP - maximumPP) * PPCostInMDKK * fixedMOForPPinPercentage));
-				// objective # 1
-				col = (Collection<String>) energyplanmMap
-						.get("CO2-emission (corrected)");
-				it = col.iterator();
-				solution.setObjective(0,
-						Double.parseDouble(it.next().toString()));
-				// objective # 2
-				col = (Collection<String>) energyplanmMap
-						.get("TOTAL ANNUAL COSTS");
-				it = col.iterator();
-				double tempAnnaulCost = Double
-						.parseDouble(it.next().toString());
-				double actualAnnualCost = tempAnnaulCost - reductionInvestmentCost -reduceFixedOMCost;
-				solution.setObjective(1, actualAnnualCost);
-
-			}
-
-			col = (Collection<String>) energyplanmMap.get("WARNING");
-			if (col != null) {
-				/*
-				 * System.out.println("No warning"); } else {
-				 */
-				@SuppressWarnings("rawtypes")
-				Iterator it3 = col.iterator();
-				String warning = it3.next().toString();
-				if (!warning.equals("PP too small. Critical import is needed")
-						&& !warning
-								.equals("Grid Stabilisation requierments are NOT fullfilled"))
-					throw new IOException("warning!!" + warning);
-				// System.out.println("Warning " + it3.next().toString());
-
-			}
-		} catch (IOException e) {
-			System.out.println("Energyplan.exe has some problem");
-			e.printStackTrace();
-		} catch (InterruptedException e) {
-			System.out.println("Energyplan interrupted");
-		}
-
+		
 	}
 
 	@SuppressWarnings("unchecked")
 	public void evaluateConstraints(Solution solution) throws JMException {
-		Iterator it;
-		Collection<String> col;
-
-		col = (Collection<String>) energyplanmMap.get("Maximumimport");
-		it = col.iterator();
-		int maximumImport = Integer.parseInt(it.next().toString());
-		col = (Collection<String>) energyplanmMap.get("Minimumstab.-load");
-		it = col.iterator();
-		int mimimumGridStabPercentage = Integer.parseInt(it.next().toString());
-
-		// constraints about heat3-balance: balance<=0
-		col = (Collection<String>) energyplanmMap.get("Annualheat3-balance");
-		it = col.iterator();
-		double annualHeat3Balance = Double.parseDouble(it.next().toString());
-
-		double constraints[] = new double[numberOfConstraints_];
-		constraints[0] = 160 - maximumImport;
-		constraints[1] = mimimumGridStabPercentage - 100;
-		constraints[2] = 0 - annualHeat3Balance;
-
-		double totalViolation = 0.0;
-		int numberOfViolation = 0;
-		for (int i = 0; i < numberOfConstraints_; i++) {
-			if (constraints[i] < 0.0) {
-				totalViolation += constraints[0];
-				numberOfViolation++;
-			}
-		}
-		/*
-		 * if (constraints[0] < 0.0) {
-		 * solution.setOverallConstraintViolation(constrints);
-		 * solution.setNumberOfViolatedConstraint(1);
-		 */
-
-		solution.setOverallConstraintViolation(totalViolation);
-		solution.setNumberOfViolatedConstraint(numberOfViolation);
-
+	
 	}
 
-	void writeModificationFile(Solution solution) throws JMException {
+	void writeModificationFile(Solution solution, File f) throws JMException {
 
 		// DecimalFormat twoDForm = new DecimalFormat("0.00");
 
@@ -343,12 +418,11 @@ public class MaOOAalborg4D extends EnergySystemOptimizationProblem {
 		/*
 		 * // PP coal share double PP_coal_share =
 		 * solution.getDecisionVariables()[4].getValue(); // pp oil sahre double
-		 * PP_oil_share = solution.getDecisionVariables()[5].getValue(); // pp
-		 * Ngas share double PP_ngas_share =
-		 * solution.getDecisionVariables()[6].getValue();
+		 * PP_oil_share = solution.getDecisionVariables()[5].getValue(); // pp Ngas
+		 * share double PP_ngas_share = solution.getDecisionVariables()[6].getValue();
 		 * 
-		 * final double PP_coal_eff=0.35; final double PP_oil_eff=0.45; final
-		 * double PP_ngas_eff=0.55;
+		 * final double PP_coal_eff=0.35; final double PP_oil_eff=0.45; final double
+		 * PP_ngas_eff=0.55;
 		 * 
 		 * //efficiency calculation for PP //normalized the share double
 		 * nor_PP_coal_share = PP_coal_share /
@@ -359,8 +433,7 @@ public class MaOOAalborg4D extends EnergySystemOptimizationProblem {
 		 * 
 		 * 
 		 * double overall_eff_other = ((PP*nor_PP_coal_share)*PP_coal_eff +
-		 * (PP*nor_PP_oil_share)*PP_oil_eff +
-		 * (PP*nor_PP_ngas_share)*PP_ngas_eff)/PP;
+		 * (PP*nor_PP_oil_share)*PP_oil_eff + (PP*nor_PP_ngas_share)*PP_ngas_eff)/PP;
 		 * 
 		 * //efficiency calculation from Dr. Marco
 		 * 
@@ -370,15 +443,7 @@ public class MaOOAalborg4D extends EnergySystemOptimizationProblem {
 
 		try {
 
-			File file = new File("modification.txt");
-			if (file.exists()) {
-				file.delete();
-
-			}
-
-			file.createNewFile();
-
-			FileWriter fw = new FileWriter(file.getAbsoluteFile());
+			FileWriter fw = new FileWriter(f.getAbsoluteFile());
 			BufferedWriter bw = new BufferedWriter(fw);
 			String str = "EnergyPLAN version";
 			bw.write(str);
@@ -404,9 +469,8 @@ public class MaOOAalborg4D extends EnergySystemOptimizationProblem {
 			bw.newLine();
 
 			/*
-			 * str = "input_cap_pp_el="; bw.write(str); bw.newLine(); // str =
-			 * "" + (int) Math.round(PP); str = "" + (int) Math.round(PP);
-			 * bw.write(str); bw.newLine();
+			 * str = "input_cap_pp_el="; bw.write(str); bw.newLine(); // str = "" + (int)
+			 * Math.round(PP); str = "" + (int) Math.round(PP); bw.write(str); bw.newLine();
 			 */
 
 			str = "input_RES1_capacity=";
@@ -433,25 +497,6 @@ public class MaOOAalborg4D extends EnergySystemOptimizationProblem {
 			bw.write(str);
 			bw.newLine();
 
-			/*
-			 * str="input_storage_gr3_cap="; bw.write(str); bw.newLine(); str =
-			 * "" + (double) Math.round(heatStorageGr3*100)/100; bw.write(str);
-			 * bw.newLine();
-			 */
-			/*
-			 * str = "input_fuel_PP[1]="; bw.write(str); bw.newLine(); str = ""
-			 * + twoDForm.format(PP_coal_share); bw.write(str); bw.newLine();
-			 * 
-			 * str = "input_fuel_PP[2]="; bw.write(str); bw.newLine(); str = ""
-			 * + twoDForm.format(PP_oil_share); bw.write(str); bw.newLine();
-			 * 
-			 * str = "input_fuel_PP[3]="; bw.write(str); bw.newLine(); str = ""
-			 * + twoDForm.format(PP_ngas_share); bw.write(str); bw.newLine();
-			 * 
-			 * str = "input_eff_pp_el="; bw.write(str); bw.newLine(); str = "" +
-			 * twoDForm.format(overall_eff_marco); bw.write(str); bw.newLine();
-			 */
-
 			bw.close();
 			// file.delete();
 		} catch (IOException e) {
@@ -460,167 +505,145 @@ public class MaOOAalborg4D extends EnergySystemOptimizationProblem {
 
 	}
 
-	void writeModificationFile(Solution solution, double boilerCap, double PPCap)
-			throws JMException {
-
-		// DecimalFormat twoDForm = new DecimalFormat("0.00");
+	void writeModificationFile(Solution solution, double boilerCap, double PPCap) throws JMException {
 
 		// CHP group 3
-		double CHPGr3 = solution.getDecisionVariables()[0].getValue();
+				double CHPGr3 = solution.getDecisionVariables()[0].getValue();
 
-		// HP group 3
-		double HPGr3 = solution.getDecisionVariables()[1].getValue();
+				// HP group 3
+				double HPGr3 = solution.getDecisionVariables()[1].getValue();
 
-		// PP
-		// double PP = solution.getDecisionVariables()[2].getValue();
+				// PP
+				// double PP = solution.getDecisionVariables()[2].getValue();
 
-		// wind
-		double wind = solution.getDecisionVariables()[3].getValue();
-		// off-shore wind
-		double offShoreWind = solution.getDecisionVariables()[4].getValue();
-		// PV
-		double PV = solution.getDecisionVariables()[5].getValue();
-		// heat starage group 3
-		// double heatStorageGr3 =
-		// solution.getDecisionVariables()[6].getValue();
+				// wind
+				double wind = solution.getDecisionVariables()[3].getValue();
+				// off-shore wind
+				double offShoreWind = solution.getDecisionVariables()[4].getValue();
+				// PV
+				double PV = solution.getDecisionVariables()[5].getValue();
+				// heat starage group 3
+				// double heatStorageGr3 =
+				// solution.getDecisionVariables()[6].getValue();
 
-		/*
-		 * // PP coal share double PP_coal_share =
-		 * solution.getDecisionVariables()[4].getValue(); // pp oil sahre double
-		 * PP_oil_share = solution.getDecisionVariables()[5].getValue(); // pp
-		 * Ngas share double PP_ngas_share =
-		 * solution.getDecisionVariables()[6].getValue();
-		 * 
-		 * final double PP_coal_eff=0.35; final double PP_oil_eff=0.45; final
-		 * double PP_ngas_eff=0.55;
-		 * 
-		 * //efficiency calculation for PP //normalized the share double
-		 * nor_PP_coal_share = PP_coal_share /
-		 * (PP_coal_share+PP_oil_share+PP_ngas_share); double nor_PP_oil_share =
-		 * PP_oil_share / (PP_coal_share+PP_oil_share+PP_ngas_share); double
-		 * nor_PP_ngas_share = PP_ngas_share /
-		 * (PP_coal_share+PP_oil_share+PP_ngas_share);
-		 * 
-		 * 
-		 * double overall_eff_other = ((PP*nor_PP_coal_share)*PP_coal_eff +
-		 * (PP*nor_PP_oil_share)*PP_oil_eff +
-		 * (PP*nor_PP_ngas_share)*PP_ngas_eff)/PP;
-		 * 
-		 * //efficiency calculation from Dr. Marco
-		 * 
-		 * double overall_eff_marco = 1 / ((nor_PP_coal_share/PP_coal_eff) +
-		 * (nor_PP_oil_share/PP_oil_eff) + (nor_PP_ngas_share/PP_ngas_eff) ) ;
-		 */
+				/*
+				 * // PP coal share double PP_coal_share =
+				 * solution.getDecisionVariables()[4].getValue(); // pp oil sahre double
+				 * PP_oil_share = solution.getDecisionVariables()[5].getValue(); // pp
+				 * Ngas share double PP_ngas_share =
+				 * solution.getDecisionVariables()[6].getValue();
+				 * 
+				 * final double PP_coal_eff=0.35; final double PP_oil_eff=0.45; final
+				 * double PP_ngas_eff=0.55;
+				 * 
+				 * //efficiency calculation for PP //normalized the share double
+				 * nor_PP_coal_share = PP_coal_share /
+				 * (PP_coal_share+PP_oil_share+PP_ngas_share); double nor_PP_oil_share =
+				 * PP_oil_share / (PP_coal_share+PP_oil_share+PP_ngas_share); double
+				 * nor_PP_ngas_share = PP_ngas_share /
+				 * (PP_coal_share+PP_oil_share+PP_ngas_share);
+				 * 
+				 * 
+				 * double overall_eff_other = ((PP*nor_PP_coal_share)*PP_coal_eff +
+				 * (PP*nor_PP_oil_share)*PP_oil_eff +
+				 * (PP*nor_PP_ngas_share)*PP_ngas_eff)/PP;
+				 * 
+				 * //efficiency calculation from Dr. Marco
+				 * 
+				 * double overall_eff_marco = 1 / ((nor_PP_coal_share/PP_coal_eff) +
+				 * (nor_PP_oil_share/PP_oil_eff) + (nor_PP_ngas_share/PP_ngas_eff) ) ;
+				 */
 
-		try {
+				try {
 
-			File file = new File("modification.txt");
-			if (file.exists()) {
-				file.delete();
+					File file = new File("modification.txt");
+					if (file.exists()) {
+						file.delete();
 
-			}
+					}
 
-			file.createNewFile();
+					file.createNewFile();
 
-			FileWriter fw = new FileWriter(file.getAbsoluteFile());
-			BufferedWriter bw = new BufferedWriter(fw);
-			String str = "EnergyPLAN version";
-			bw.write(str);
-			bw.newLine();
-			str = "698";
-			bw.write(str);
-			bw.newLine();
+					FileWriter fw = new FileWriter(file.getAbsoluteFile());
+					BufferedWriter bw = new BufferedWriter(fw);
+					String str = "EnergyPLAN version";
+					bw.write(str);
+					bw.newLine();
+					str = "698";
+					bw.write(str);
+					bw.newLine();
 
-			str = "input_cap_chp3_el=";
-			bw.write(str);
-			bw.newLine();
-			// str = "" + (int) Math.round(CHPGr3);
-			str = "" + (int) Math.round(CHPGr3);
-			bw.write(str);
-			bw.newLine();
+					str = "input_cap_chp3_el=";
+					bw.write(str);
+					bw.newLine();
+					// str = "" + (int) Math.round(CHPGr3);
+					str = "" + (int) Math.round(CHPGr3);
+					bw.write(str);
+					bw.newLine();
 
-			str = "input_cap_hp3_el=";
-			bw.write(str);
-			bw.newLine();
-			// str = "" + (int) Math.round(HPGr3);
-			str = "" + (int) Math.round(HPGr3);
-			bw.write(str);
-			bw.newLine();
+					str = "input_cap_hp3_el=";
+					bw.write(str);
+					bw.newLine();
+					// str = "" + (int) Math.round(HPGr3);
+					str = "" + (int) Math.round(HPGr3);
+					bw.write(str);
+					bw.newLine();
 
-			/*
-			 * str = "input_cap_pp_el="; bw.write(str); bw.newLine(); // str =
-			 * "" + (int) Math.round(PP); str = "" + (int) Math.round(PP);
-			 * bw.write(str); bw.newLine();
-			 */
+					/*
+					 * str = "input_cap_pp_el="; bw.write(str); bw.newLine(); // str =
+					 * "" + (int) Math.round(PP); str = "" + (int) Math.round(PP);
+					 * bw.write(str); bw.newLine();
+					 */
 
-			str = "input_RES1_capacity=";
-			bw.write(str);
-			bw.newLine();
-			// str = "" + (int) Math.round(wind);
-			str = "" + (int) Math.round(wind);
-			bw.write(str);
-			bw.newLine();
+					str = "input_RES1_capacity=";
+					bw.write(str);
+					bw.newLine();
+					// str = "" + (int) Math.round(wind);
+					str = "" + (int) Math.round(wind);
+					bw.write(str);
+					bw.newLine();
 
-			str = "input_RES2_capacity=";
-			bw.write(str);
-			bw.newLine();
-			// str = "" + (int) Math.round(offShoreWind);
-			str = "" + (int) Math.round(offShoreWind);
-			bw.write(str);
-			bw.newLine();
+					str = "input_RES2_capacity=";
+					bw.write(str);
+					bw.newLine();
+					// str = "" + (int) Math.round(offShoreWind);
+					str = "" + (int) Math.round(offShoreWind);
+					bw.write(str);
+					bw.newLine();
 
-			str = "input_RES3_capacity=";
-			bw.write(str);
-			bw.newLine();
-			// str = "" + (int) Math.round(PV);
-			str = "" + (int) Math.round(PV);
-			bw.write(str);
-			bw.newLine();
+					str = "input_RES3_capacity=";
+					bw.write(str);
+					bw.newLine();
+					// str = "" + (int) Math.round(PV);
+					str = "" + (int) Math.round(PV);
+					bw.write(str);
+					bw.newLine();
 
-			/*
-			 * str="input_storage_gr3_cap="; bw.write(str); bw.newLine(); str =
-			 * "" + (double) Math.round(heatStorageGr3*100)/100; bw.write(str);
-			 * bw.newLine();
-			 */
-			/*
-			 * str = "input_fuel_PP[1]="; bw.write(str); bw.newLine(); str = ""
-			 * + twoDForm.format(PP_coal_share); bw.write(str); bw.newLine();
-			 * 
-			 * str = "input_fuel_PP[2]="; bw.write(str); bw.newLine(); str = ""
-			 * + twoDForm.format(PP_oil_share); bw.write(str); bw.newLine();
-			 * 
-			 * str = "input_fuel_PP[3]="; bw.write(str); bw.newLine(); str = ""
-			 * + twoDForm.format(PP_ngas_share); bw.write(str); bw.newLine();
-			 * 
-			 * str = "input_eff_pp_el="; bw.write(str); bw.newLine(); str = "" +
-			 * twoDForm.format(overall_eff_marco); bw.write(str); bw.newLine();
-			 */
 
-			str = "input_cap_boiler3_th=";
-			bw.write(str);
-			bw.newLine();
-			// str = "" + (int) Math.round(modification);
-			str = "" + (int) Math.round(boilerCap);
-			bw.write(str);
-			bw.newLine();
+					str = "input_cap_boiler3_th=";
+					bw.write(str);
+					bw.newLine();
+					// str = "" + (int) Math.round(modification);
+					str = "" + (int) Math.round(boilerCap);
+					bw.write(str);
+					bw.newLine();
 
-			str = "input_cap_pp_el=";
-			bw.write(str);
-			bw.newLine();
-			str = "" + (int) Math.round(PPCap);
-			bw.write(str);
-			bw.newLine();
+					str = "input_cap_pp_el=";
+					bw.write(str);
+					bw.newLine();
+					str = "" + (int) Math.round(PPCap);
+					bw.write(str);
+					bw.newLine();
 
-			bw.close();
-			// file.delete();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+					bw.close();
+					// file.delete();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 
 	}
 
-	void modifyModificationFile(double modificationBoiler, double modificationPP)
-			throws JMException {
+	void modifyModificationFile(double modificationBoiler, double modificationPP) throws JMException {
 		// now only modify boiler in group # 3
 		try {
 
