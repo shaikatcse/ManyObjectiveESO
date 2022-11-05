@@ -119,7 +119,112 @@ public class RBoxplot {
       }
 
       os.close();
+    }
     } // for
-    } // generateRBoxplotScripts
+    
+    
+    /**
+     * This method produces R scripts for generating eps files containing boxplots
+     * of the results previosly obtained. The boxplots will be arranged in a grid
+     * of rows x cols. As the number of problems in the experiment can be too high,
+     * the @param problems includes a list of the problems to be plotted.
+     * @param rows
+     * @param cols
+     * @param problems List of problem to plot
+     * @param prefix Prefix to be added to the names of the R scripts
+     * @throws java.io.FileNotFoundException
+     * @throws java.io.IOException
+     */
+    public static  void generateScripts(int rows,
+                                        int cols,
+                                        String[] problems,
+                                        String prefix,
+                                        boolean notch,
+                                        String baseDirectory, String[] indicatorList_, String [] algorithmNameList_)
+                                              throws IOException {
+      // STEP 1. Creating R output directory
+
+      String rDirectory = "R";
+      rDirectory = baseDirectory + "/" +  rDirectory;
+      System.out.println("R    : " + rDirectory);
+      File rOutput;
+      rOutput = new File(rDirectory);
+      if (!rOutput.exists()) {
+        new File( rDirectory).mkdirs();
+        System.out.println("Creating " +  rDirectory + " directory");
+      }
+
+     // for (int indicator = 0; indicator <  indicatorList_.length; indicator++) {
+       // System.out.println("Indicator: " +  indicatorList_[indicator]);
+        String rFile =  rDirectory + "/" + prefix + ".Boxplot.R";
+
+        FileWriter os = new FileWriter(rFile, false);
+        /*os.write("postscript(\"" + prefix + "." +
+                 indicatorList_[indicator] +
+                ".Boxplot.eps\", horizontal=FALSE, onefile=FALSE, height=8, width=12, pointsize=10)" +
+                "\n");*/
+        
+        os.write("pdf(\"" + prefix + 
+                
+               ".Boxplot.pdf\",  onefile=FALSE, height=8, width=10)" +
+               "\n");
+       // pdf("indicators_NSGAII_NSGAIIsi.pdf", onefile=FALSE, width=10)
+        
+        //os.write("resultDirectory<-\"../data/" + experimentName_ +"\"" + "\n");
+        os.write("resultDirectory<-\"../" + "\"" + "\n");
+        os.write("qIndicator <- function(indicator, problem)" + "\n");
+        os.write("{" + "\n");
+
+        for (int i = 0; i <  algorithmNameList_.length; i++) { 
+        	os.write("file" +  algorithmNameList_[i] +
+        			"<-paste(resultDirectory," + 
+                    "problem, sep=\"/\")" + "\n");
+            
+        	os.write("file" +  algorithmNameList_[i] +
+                  "<-paste(file" +  algorithmNameList_[i] + "," +
+                  "\""+ algorithmNameList_[i] + "\", sep=\"/\")" + "\n");
+          os.write("file" +  algorithmNameList_[i] +
+                  "<-paste(file" +  algorithmNameList_[i] + ", " +
+                  "indicator, sep=\"/\")" + "\n");
+          os.write( algorithmNameList_[i] + "<-scan(" + "file" +  algorithmNameList_[i] + ")" + "\n");
+          os.write("\n");
+        } // for
+
+        os.write("algs<-c(");
+        for (int i = 0; i <  algorithmNameList_.length - 1; i++) {
+          os.write("\"" +  algorithmNameList_[i] + "\",");
+        } // for
+        os.write("\"" +  algorithmNameList_[ algorithmNameList_.length - 1] + "\")" + "\n");
+
+        os.write("boxplot(");
+        for (int i = 0; i <  algorithmNameList_.length; i++) {
+          os.write( algorithmNameList_[i] + ",");
+        } // for
+        if (notch) {
+          os.write("names=algs, notch = TRUE)" + "\n");
+        } else {
+          os.write("names=algs, notch = FALSE)" + "\n");
+        }
+        os.write("titulo <-paste(indicator," + 
+        		"paste(\""+ prefix+"_"+ "\"" + ",problem), sep=\":\")" + "\n");
+        os.write("title(main=titulo)" + "\n");
+
+        os.write("}" + "\n");
+
+        os.write("par(mfrow=c(" + rows + "," + cols + "))" + "\n");
+
+        for(String indicator: indicatorList_) {
+        os.write("indicator<-\"" +  indicator + "\"" + "\n");
+
+        for (String problem : problems) {
+          os.write("qIndicator(indicator, \"" + problem + "\")" + "\n");
+        }
+        
+        }
+        os.write("dev.off()");
+        
+        os.close();
+      } 
+    //} // generateRBoxplotScripts
 
 }
