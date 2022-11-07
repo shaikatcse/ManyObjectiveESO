@@ -598,7 +598,12 @@ public Map<String,Object> getAdditionalAttributes(){
 public void setAdditionalAttributes(Map<String, Object> aMap) {
 	additionalAttributes = aMap;
 }
+
+public double[] getObjectives() {
+	return objective_; 
+}
   
+
 
   
 } // Solution

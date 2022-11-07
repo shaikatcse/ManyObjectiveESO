@@ -471,4 +471,9 @@ public class SolutionSet implements Serializable {
 	  }
 	  return temp;	 
   }
+  
+  public List<Solution> getSolutionList() {
+	  return solutionsList_;
+  }
+  
 } // SolutionSet

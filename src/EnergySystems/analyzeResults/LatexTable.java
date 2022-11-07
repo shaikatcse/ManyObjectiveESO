@@ -550,13 +550,13 @@ public class LatexTable {
 
 		   
 		    String[] algorithmNameList_   = new String[] {
-				      "NSGAII", "NSGAIII", "SPEA2"};
+				      "NSGAII", "SPEA2", "NSGAIII", "MOEAD" };
 		    
-		    String[] indicatorList_   = new String[] {"HV", "IGD"} ;
+		    String[] indicatorList_   = new String[] {"HV", "IGD", "GD"} ;
 		    
 		    
 		    // Configure scripts for DTLZ
-		    rows = 2 ;
+		    rows = 3 ;
 		    columns = 2 ;
 		    prefix = new String("MaOOCEIS4D");
 		    problems = new String[]{"Unconstrained", "Constrained"} ;

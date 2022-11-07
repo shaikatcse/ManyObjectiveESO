@@ -7,26 +7,35 @@ fileNSGAII<-paste(fileNSGAII,"NSGAII", sep="/")
 fileNSGAII<-paste(fileNSGAII, indicator, sep="/")
 NSGAII<-scan(fileNSGAII)
 
-fileNSGAIII<-paste(resultDirectory,problem, sep="/")
-fileNSGAIII<-paste(fileNSGAIII,"NSGAIII", sep="/")
-fileNSGAIII<-paste(fileNSGAIII, indicator, sep="/")
-NSGAIII<-scan(fileNSGAIII)
-
 fileSPEA2<-paste(resultDirectory,problem, sep="/")
 fileSPEA2<-paste(fileSPEA2,"SPEA2", sep="/")
 fileSPEA2<-paste(fileSPEA2, indicator, sep="/")
 SPEA2<-scan(fileSPEA2)
 
-algs<-c("NSGAII","NSGAIII","SPEA2")
-boxplot(NSGAII,NSGAIII,SPEA2,names=algs, notch = TRUE)
+fileNSGAIII<-paste(resultDirectory,problem, sep="/")
+fileNSGAIII<-paste(fileNSGAIII,"NSGAIII", sep="/")
+fileNSGAIII<-paste(fileNSGAIII, indicator, sep="/")
+NSGAIII<-scan(fileNSGAIII)
+
+fileMOEAD<-paste(resultDirectory,problem, sep="/")
+fileMOEAD<-paste(fileMOEAD,"MOEAD", sep="/")
+fileMOEAD<-paste(fileMOEAD, indicator, sep="/")
+MOEAD<-scan(fileMOEAD)
+
+algs<-c("NSGAII","SPEA2","NSGAIII","MOEAD")
+boxplot(NSGAII,SPEA2,NSGAIII,MOEAD,names=algs, notch = TRUE)
 titulo <-paste(indicator,paste("MaOOCEIS4D_",problem), sep=":")
 title(main=titulo)
 }
-par(mfrow=c(2,2))
+par(mfrow=c(3,2))
 indicator<-"HV"
 qIndicator(indicator, "Unconstrained")
-qIndicator(indicator, "Constrained")
 indicator<-"IGD"
 qIndicator(indicator, "Unconstrained")
+
+indicator<-"HV"
 qIndicator(indicator, "Constrained")
+indicator<-"IGD"
+qIndicator(indicator, "Constrained")
+
 dev.off()

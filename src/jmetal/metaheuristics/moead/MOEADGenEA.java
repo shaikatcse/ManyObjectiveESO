@@ -34,6 +34,8 @@ import java.util.StringTokenizer;
 import java.util.Vector;
 
 
+
+
 class Everything{
 	Solution solution;
 	int type, n;
@@ -55,7 +57,7 @@ public class MOEADGenEA extends MOEAD {
   public MOEADGenEA(Problem problem) {
     super (problem) ;
 
-    functionType_ = "_TCHE1";
+    functionType_ = "_PBI";
 
   } // DMOEA
 
@@ -424,6 +426,27 @@ public class MOEADGenEA extends MOEAD {
 
       fitness = maxFun;
     } // if
+    else if (functionType_.equals("_PBI")) {
+        double d1, d2, nl;
+        double theta = 5.0;
+
+        d1 = d2 = nl = 0.0;
+
+        for (int i = 0; i < problem_.getNumberOfObjectives(); i++) {
+          d1 += (individual.getObjective(i) - z_[i]) * lambda[i];
+          nl += Math.pow(lambda[i], 2.0);
+        }
+        nl = Math.sqrt(nl);
+        d1 = Math.abs(d1) / nl;
+
+        for (int i = 0; i < problem_.getNumberOfObjectives(); i++) {
+          d2 += Math.pow((individual.getObjective(i) - z_[i]) - d1 * (lambda[i] / nl), 2.0);
+        }
+        d2 = Math.sqrt(d2);
+
+        fitness = (d1 + theta * d2);
+    }
+    
     else {
       System.out.println("MOEAD.fitnessFunction: unknown type " + functionType_);
       System.exit(-1);
