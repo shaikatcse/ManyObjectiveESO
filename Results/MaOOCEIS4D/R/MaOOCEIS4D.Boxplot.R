@@ -17,25 +17,16 @@ fileNSGAIII<-paste(fileNSGAIII,"NSGAIII", sep="/")
 fileNSGAIII<-paste(fileNSGAIII, indicator, sep="/")
 NSGAIII<-scan(fileNSGAIII)
 
-fileMOEAD<-paste(resultDirectory,problem, sep="/")
-fileMOEAD<-paste(fileMOEAD,"MOEAD", sep="/")
-fileMOEAD<-paste(fileMOEAD, indicator, sep="/")
-MOEAD<-scan(fileMOEAD)
-
-algs<-c("NSGAII","SPEA2","NSGAIII","MOEAD")
-boxplot(NSGAII,SPEA2,NSGAIII,MOEAD,names=algs, notch = TRUE)
+algs<-c("NSGAII","SPEA2","NSGAIII")
+boxplot(NSGAII,SPEA2,NSGAIII,names=algs, notch = TRUE)
 titulo <-paste(indicator,paste("MaOOCEIS4D_",problem), sep=":")
 title(main=titulo)
 }
 par(mfrow=c(3,2))
 indicator<-"HV"
 qIndicator(indicator, "Unconstrained")
+qIndicator(indicator, "Constrained")
 indicator<-"IGD"
 qIndicator(indicator, "Unconstrained")
-
-indicator<-"HV"
 qIndicator(indicator, "Constrained")
-indicator<-"IGD"
-qIndicator(indicator, "Constrained")
-
 dev.off()

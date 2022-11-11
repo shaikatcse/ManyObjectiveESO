@@ -550,9 +550,9 @@ public class LatexTable {
 
 		   
 		    String[] algorithmNameList_   = new String[] {
-				      "NSGAII", "SPEA2", "NSGAIII", "MOEAD" };
+				      "NSGAII", "SPEA2", "NSGAIII"/*, "MOEAD" */};
 		    
-		    String[] indicatorList_   = new String[] {"HV", "IGD", "GD"} ;
+		    String[] indicatorList_   = new String[] {"HV", "IGD"} ;
 		    
 		    
 		    // Configure scripts for DTLZ

@@ -61,12 +61,12 @@ public class NSGAII_Settings extends Settings {
 	    e.printStackTrace();
     }
     // Default experiments.settings
-    populationSize_              = 100   ;
-    maxEvaluations_              = 100000 ;
+    populationSize_              = 165   ;
+    maxEvaluations_              = 16500 ;
     mutationProbability_         = 1.0/problem_.getNumberOfVariables() ;
     crossoverProbability_        = 0.9   ;
     mutationDistributionIndex_   = 20.0  ;
-    crossoverDistributionIndex_  = 20.0  ;
+    crossoverDistributionIndex_  = 30.0  ;
   } // NSGAII_Settings
 
 

@@ -65,11 +65,11 @@ public class MOEADStandardStudy extends Experiment {
         } // if
 
         algorithm[0] = new MOEAD_Settings(problemName).configure(parameters[0]);
-         algorithm[1] = new MOEADEA11_Settings(problemName).configure(parameters[1]);
-         algorithm[2] = new MOEADEA15_Settings(problemName).configure(parameters[2]);
-         algorithm[3] = new MOEADEA33_Settings(problemName).configure(parameters[3]);
-         algorithm[4] = new MOEADEA55_Settings(problemName).configure(parameters[4]);
-         algorithm[5] = new MOEADGenEA_Settings(problemName).configure(parameters[5]);
+         algorithm[1] = new NSGAII_Settings(problemName).configure(parameters[1]);
+         algorithm[2] = new SPEA2_Settings(problemName).configure(parameters[2]);
+         //algorithm[3] = new MOEADEA33_Settings(problemName).configure(parameters[3]);
+         //algorithm[4] = new MOEADEA55_Settings(problemName).configure(parameters[4]);
+         //algorithm[5] = new MOEADGenEA_Settings(problemName).configure(parameters[5]);
          
          
          
@@ -92,9 +92,9 @@ public class MOEADStandardStudy extends Experiment {
   public static void main(String[] args) throws JMException, IOException {
     MOEADStandardStudy exp = new MOEADStandardStudy();
 
-    exp.experimentName_ = "MOEADStandardStudy";
+    exp.experimentName_ = "MOEAD_NGSAII_SPEA2_Study4D";
     exp.algorithmNameList_ = new String[]{
-                                "MOEAD", "MOEADEA11", "MOEADEA15", "MOEADEA33", "MOEADEA55", "MOEADGenEA"};
+                                "MOEAD", "NSGAII","SPEA2"};
     exp.problemList_ = new String[]{
                                     /*"WFG1","WFG2","WFG3","WFG4","WFG5","WFG6",
                                     "WFG7","WFG8","WFG9",*/
@@ -111,13 +111,13 @@ public class MOEADStandardStudy extends Experiment {
 
     int numberOfAlgorithms = exp.algorithmNameList_.length;
 
-    exp.experimentBaseDirectory_ = "C:\\Users\\shaik\\eclipse-workspace\\ManyObjectiveESO\\MOEADResults" +
+    exp.experimentBaseDirectory_ = "C:\\Users\\shaik\\eclipse-workspace\\ManyObjectiveESO\\" +
                                    exp.experimentName_;
     exp.paretoFrontDirectory_ = "C:\\Users\\shaik\\eclipse-workspace\\ManyObjectiveESO\\resources\\referenceFronts";
 
     exp.algorithmSettings_ = new Settings[numberOfAlgorithms];
 
-    exp.independentRuns_ = 50;
+    exp.independentRuns_ = 100;
 
     exp.initExperiment();
 
@@ -153,10 +153,10 @@ public class MOEADStandardStudy extends Experiment {
     columns = 3 ;
     prefix = new String("WFG");
     problems = new String[]{"WFG1","WFG2","WFG3","WFG4","WFG5","WFG6",
-                            "WFG7","WFG8","WFG9"} ;*/
+                            "WFG7","WFG8","WFG9"} ;
 
     exp.generateRBoxplotScripts(rows, columns, problems, prefix, notch=false, exp) ;
-    exp.generateRWilcoxonScripts(problems, prefix, exp) ;
+    exp.generateRWilcoxonScripts(problems, prefix, exp) ;*/
 
     // Applying Friedman test
     Friedman test = new Friedman(exp);

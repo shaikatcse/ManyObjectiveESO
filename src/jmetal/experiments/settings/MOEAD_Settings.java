@@ -48,6 +48,10 @@ public class MOEAD_Settings extends Settings {
   public double mutationProbability_          ;
   public double mutationDistributionIndex_ ;
 
+  public double crossoverProbability_;
+  public double crossoverDistributionIndex_ ;
+
+  
   public String dataDirectory_  ;
 
   public int T_        ;
@@ -72,10 +76,13 @@ public class MOEAD_Settings extends Settings {
     CR_ = 1.0 ;
     F_  = 0.5 ;
     populationSize_ = 165;
-    maxEvaluations_ = 27225;
+    maxEvaluations_ = 16500;
    
     mutationProbability_ = 1.0/problem_.getNumberOfVariables() ;
     mutationDistributionIndex_ = 20;
+    
+    crossoverProbability_        = 0.9   ;
+    crossoverDistributionIndex_  = 30.0  ;
 
     T_ = 20;
     delta_ = 0.9;
@@ -113,10 +120,17 @@ public class MOEAD_Settings extends Settings {
     algorithm.setInputParameter("nr", nr_) ;
     
     // Crossover operator 
+    //parameters = new HashMap() ;
+    //parameters.put("CR", CR_) ;
+    //parameters.put("F", F_) ;
+    
+    //crossover = CrossoverFactory.getCrossoverOperator("DifferentialEvolutionCrossover", parameters);                   
+    
     parameters = new HashMap() ;
-    parameters.put("CR", CR_) ;
-    parameters.put("F", F_) ;
-    crossover = CrossoverFactory.getCrossoverOperator("DifferentialEvolutionCrossover", parameters);                   
+    parameters.put("probability", crossoverProbability_) ;
+    parameters.put("distributionIndex", crossoverDistributionIndex_) ;
+    crossover = CrossoverFactory.getCrossoverOperator("SBXCrossover", parameters);
+    
     
     // Mutation operator
     parameters = new HashMap() ;

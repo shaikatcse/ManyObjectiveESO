@@ -64,13 +64,13 @@ public class SPEA2_Settings extends Settings {
 	    e.printStackTrace();
     }      
 
-    populationSize_           = 100   ;
-    archiveSize_              = 100   ;
-    maxEvaluations_           = 25000 ;
+    populationSize_           = 165   ;
+    archiveSize_              = 165   ;
+    maxEvaluations_           = 16500 ;
     mutationProbability_   = 1.0/problem_.getNumberOfVariables() ;
     crossoverProbability_  = 0.9   ;
     crossoverDistributionIndex_ = 20.0  ;
-    mutationDistributionIndex_  = 20.0  ;
+    mutationDistributionIndex_  = 30.0  ;
 
   } // SPEA2_Settings
   

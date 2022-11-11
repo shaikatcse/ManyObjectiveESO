@@ -44,7 +44,7 @@ public class WFG1 extends WFG {
   * @param solutionType The solution type must "Real" or "BinaryReal".
   */
   public WFG1(String solutionType) throws ClassNotFoundException {
-    this(solutionType, 2, 4, 2) ;
+    this(solutionType, 2, 4, 4) ;
   } // WFG1
 
  /**

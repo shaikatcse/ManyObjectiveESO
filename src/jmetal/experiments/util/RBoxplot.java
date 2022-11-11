@@ -67,10 +67,15 @@ public class RBoxplot {
       String rFile =  rDirectory + "/" + prefix + "." +  experiment.indicatorList_[indicator] + ".Boxplot.R";
 
       FileWriter os = new FileWriter(rFile, false);
-      os.write("postscript(\"" + prefix + "." +
+      /*os.write("postscript(\"" + prefix + "." +
                experiment.indicatorList_[indicator] +
               ".Boxplot.eps\", horizontal=FALSE, onefile=FALSE, height=8, width=12, pointsize=10)" +
+              "\n");*/
+      os.write("pdf(\"" + prefix + 
+              
+              ".Boxplot.pdf\",  onefile=FALSE, height=8, width=10)" +
               "\n");
+      
       //os.write("resultDirectory<-\"../data/" + experimentName_ +"\"" + "\n");
       os.write("resultDirectory<-\"../data/" + "\"" + "\n");
       os.write("qIndicator <- function(indicator, problem)" + "\n");
