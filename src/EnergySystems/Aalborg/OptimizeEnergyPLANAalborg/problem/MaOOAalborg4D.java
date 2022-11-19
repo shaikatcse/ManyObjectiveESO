@@ -27,10 +27,10 @@ import java.util.StringTokenizer;
 
 import EnergySystems.EnergySystemOptimizationProblem;
 import EnergySystems.Aalborg.OptimizeEnergyPLANAalborg.parse.EnergyPLANFileParseForAalborg;
-import EnergySystems.GiudicarieEsteriori.ParseFile.EnergyPLANFileParseForCivis;
 
 import org.apache.commons.collections.MultiMap;
 import org.apache.commons.collections.map.MultiValueMap;
+import org.apache.commons.lang3.AnnotationUtils;
 
 /*
  * Two problems are solved in this version
@@ -57,7 +57,7 @@ public class MaOOAalborg4D extends EnergySystemOptimizationProblem {
 	 */
 	public MaOOAalborg4D(String solutionType) {
 		numberOfVariables_ = 7;
-		numberOfObjectives_ = 2;
+		numberOfObjectives_ = 4;
 		numberOfConstraints_ = 3;
 		problemName_ = "MaOOAalborg4D";
 
@@ -217,6 +217,14 @@ public class MaOOAalborg4D extends EnergySystemOptimizationProblem {
 		Iterator it;
 		Collection<String> col;
 
+		/*//extract all data
+		for (Object name: energyplanmMap.keySet()) {
+		    String key = name.toString();
+		    String value = energyplanmMap.get(name).toString();
+		    System.out.println(key + " " + value);
+		}*/
+		
+		
 		// extracting maximum Boiler configuration (group # 3)
 		col = (Collection<String>) energyplanmMap.get("Annual MaximumBoiler 3Heat");
 		it = col.iterator();
@@ -265,6 +273,17 @@ public class MaOOAalborg4D extends EnergySystemOptimizationProblem {
 				it = col.iterator();
 				solution.setObjective(1, Double.parseDouble(it.next().toString()));
 
+				//3rd obective 
+				double thirdObjective = calculateThirdObjective(energyplanmMap);
+				solution.setObjective(2, thirdObjective);
+	
+				//4th Obective
+				double ESD = calculateForthObective(energyplanmMap);
+				solution.setObjective(3, ESD);
+				
+				
+				
+				
 				// check warning
 				col = (Collection<String>) energyplanmMap.get("WARNING");
 				if (col != null) {
@@ -309,19 +328,31 @@ public class MaOOAalborg4D extends EnergySystemOptimizationProblem {
 			double actualAnnualCost = tempAnnaulCost - reductionInvestmentCost - reduceFixedOMCost;
 			solution.setObjective(1, actualAnnualCost);
 
-		
-			//constraints
+			
 		
 
-			col = (Collection<String>) energyplanmMap.get("Maximumimport");
+			//3rd obective 
+			double thirdObjective = calculateThirdObjective(energyplanmMap);
+			solution.setObjective(2, thirdObjective);
+
+			//4th Obective
+			double ESD = calculateForthObective(energyplanmMap);
+			solution.setObjective(3, ESD);
+
+			
+			}
+			//constraints
+		
+			//as PP is considered as import  
+			col = (Collection<String>) energyplanmMap.get("Annual MaximumPPElectr.");
 			it = col.iterator();
 			int maximumImport = Integer.parseInt(it.next().toString());
-			col = (Collection<String>) energyplanmMap.get("Minimumstab.-load");
+			col = (Collection<String>) energyplanmMap.get("Annual MinimumStabil.Load");
 			it = col.iterator();
 			int mimimumGridStabPercentage = Integer.parseInt(it.next().toString());
 
 			// constraints about heat3-balance: balance<=0
-			col = (Collection<String>) energyplanmMap.get("Annualheat3-balance");
+			col = (Collection<String>) energyplanmMap.get("AnnualBalance3Heat");
 			it = col.iterator();
 			double annualHeat3Balance = Double.parseDouble(it.next().toString());
 
@@ -349,7 +380,7 @@ public class MaOOAalborg4D extends EnergySystemOptimizationProblem {
 
 		
 		
-		}
+		
 
 		col = (Collection<String>) energyplanmMap.get("WARNING");
 		if (col != null) {
@@ -670,5 +701,75 @@ public class MaOOAalborg4D extends EnergySystemOptimizationProblem {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	double calculateForthObective(MultiMap energyplanmMap) {
+		double PEFImport = 2.12; // 1/0.47
+		
+		Collection<String> col = (Collection<String>) energyplanmMap.get("Ngas Consumption");
+		Iterator<String> it = col.iterator();
+		double nGasConsumption = Double.parseDouble(it.next().toString());
+
+		//local production
+		//wind
+		col = (Collection<String>) energyplanmMap.get("AnnualWindElectr.");
+		it = col.iterator();
+		double annualWindEl = Double.parseDouble(it.next().toString());
+		//chp
+		col = (Collection<String>) energyplanmMap.get("AnnualCHPElectr.");
+		it = col.iterator();
+		double annualChpEl = Double.parseDouble(it.next().toString());
+		
+		//cshp
+		col = (Collection<String>) energyplanmMap.get("AnnualCSHPElectr.");
+		it = col.iterator();
+		double annualCshpEl = Double.parseDouble(it.next().toString());
+		
+		double localProduction = annualWindEl + annualChpEl + annualCshpEl;
+		
+		col = (Collection<String>) energyplanmMap.get("AnnualExportElectr.");
+		it = col.iterator();
+		double annualExport = Double.parseDouble(it.next().toString());
+		//Export PEF 
+		double PEFExport = annualWindEl*1 + annualChpEl * (1.0/0.25) + annualCshpEl * (1.0/0.54);
+		
+		col = (Collection<String>) energyplanmMap.get("Biomass Consumption");
+		it = col.iterator();
+		double biomassConsumption = Double.parseDouble(it.next().toString());
+		
+		col = (Collection<String>) energyplanmMap.get("Waste Input");
+		it = col.iterator();
+		double wasteConsumption = Double.parseDouble(it.next().toString());
+		
+		//HP heat
+		col = (Collection<String>) energyplanmMap.get("AnnualHP 2Heat");
+		it = col.iterator();
+		double hp2Heat = Double.parseDouble(it.next().toString());
+		
+		col = (Collection<String>) energyplanmMap.get("AnnualHP 3Heat");
+		it = col.iterator();
+		double hp3Heat = Double.parseDouble(it.next().toString());
+		double hpHeat = hp2Heat + hp3Heat;
+		
+		double ESD = nGasConsumption/( (localProduction- annualExport) * PEFExport + nGasConsumption + biomassConsumption + wasteConsumption 
+										+ (hpHeat - (hpHeat/3.6) ) );
+		return ESD;
+	}
+	
+	double calculateThirdObjective(MultiMap energyplanmMap ) {
+		Collection<String> col = (Collection<String>) energyplanmMap.get("AnnualPPElectr.");
+		Iterator<String> it = col.iterator();
+		double annualImport = Double.parseDouble(it.next().toString());
+		
+		col = (Collection<String>) energyplanmMap.get("AnnualExportElectr.");
+		it = col.iterator();
+		double annualExport = Double.parseDouble(it.next().toString());
+		
+		col = (Collection<String>) energyplanmMap.get("AnnualElectr.Demand");
+		it = col.iterator();
+		double annualElDemand = Double.parseDouble(it.next().toString());
+		
+		double thirdObjective = (annualImport+ annualExport)/annualElDemand;
+		return thirdObjective;
 	}
 }

@@ -79,8 +79,8 @@ public class MaOOAalborgMain {
 			// ;
 
 			// Algorithm parameters
-			algorithm.setInputParameter("populationSize", 100);
-			algorithm.setInputParameter("maxEvaluations", 15000);
+			algorithm.setInputParameter("populationSize", 10);
+			algorithm.setInputParameter("maxEvaluations", 150);
 			// for spea2
 			// algorithm.setInputParameter("archiveSize",100);
 
