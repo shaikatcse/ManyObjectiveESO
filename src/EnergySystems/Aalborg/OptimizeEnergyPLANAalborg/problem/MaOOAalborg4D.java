@@ -365,7 +365,7 @@ public class MaOOAalborg4D extends EnergySystemOptimizationProblem {
 			int numberOfViolation = 0;
 			for (int i = 0; i < numberOfConstraints_; i++) {
 				if (constraints[i] < 0.0) {
-					totalViolation += constraints[0];
+					totalViolation += constraints[i];
 					numberOfViolation++;
 				}
 			}

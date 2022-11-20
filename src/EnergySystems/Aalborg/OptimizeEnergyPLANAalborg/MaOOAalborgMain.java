@@ -57,7 +57,7 @@ public class MaOOAalborgMain {
 		// long seed[]={102354,986587,456987,159753,
 		// 216557,589632,471259,523486,4158963,745896};
 
-		int numberOfRun = 10;
+		int numberOfRun = 1;
 		for (int i = 0; i < numberOfRun; i++) {
 
 			// PseudoRandom.setRandomGenerator(new RandomGenerator(seed[i]));
@@ -87,13 +87,13 @@ public class MaOOAalborgMain {
 			// Mutation and Crossover for Real codification
 			parameters = new HashMap();
 			parameters.put("probability", 0.9);
-			parameters.put("distributionIndex", 10.0);
+			parameters.put("distributionIndex", 20.0);
 			crossover = CrossoverFactory.getCrossoverOperator("SBXCrossover",
 					parameters);
 
 			parameters = new HashMap();
 			parameters.put("probability", 1.0 / problem.getNumberOfVariables());
-			parameters.put("distributionIndex", 10.0);
+			parameters.put("distributionIndex", 20.0);
 			mutation = MutationFactory.getMutationOperator(
 					"PolynomialMutation", parameters);
 			// parameters.put("maximum generation", (int)
@@ -165,10 +165,10 @@ public class MaOOAalborgMain {
 			logger_.info("Total execution time: " + estimatedTime + "ms");
 			logger_.info("Variables values have been writen to file VAR");
 			//population.printVariablesToFile("AalborgNewResults\\VAR" + i);
-			population.printFeasibleVAR("AalborgNewResults\\VAR" + i);
+			population.printFeasibleVAR("VAR" + i);
 			logger_.info("Objectives values have been writen to file FUN");
 			//population.printObjectivesToFile("AalborgNewResults\\FUN" + i);
-			population.printFeasibleFUN("AalborgNewResults\\FUN" + i);
+			population.printFeasibleFUN("FUN" + i);
 		}
 	}
 }

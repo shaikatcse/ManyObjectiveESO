@@ -224,6 +224,7 @@ public class EnergyPLANFileParseForAalborg{
 				}
 			}
 			
+			
 			//read hour values
 			/*line = br.readLine();
 			line = br.readLine();
