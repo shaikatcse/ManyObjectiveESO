@@ -68,9 +68,15 @@ public class MaOOAalborg4D extends EnergySystemOptimizationProblem {
 		int var;
 
 		// capacities for CHP, HP, PP
-		// index - 0 -> CHP
-		// index - 1 -> HP
+		// index - 0 -> CHP3
+		// index - 1 -> HP3
 		// index - 2 -> PP
+		// index - 3 -> wind
+		// index - 4 -> offshore wind
+		// index - 5 -> PV
+		// index - 6 -> boiler3
+		
+		
 
 		for (var = 0; var < 2; var++) {
 			lowerLimit_[var] = 0.0;
@@ -79,7 +85,7 @@ public class MaOOAalborg4D extends EnergySystemOptimizationProblem {
 
 		// capacity for PP, its a dummy, the value will be set in evaluation
 		// methods
-		// the boiler capacity do not need to be optimize, it is just use here
+		// the pp capacity do not need to be optimize, it is just use here
 		// to print the value
 		lowerLimit_[2] = 0.0;
 		upperLimit_[2] = 1000.0;
@@ -127,7 +133,7 @@ public class MaOOAalborg4D extends EnergySystemOptimizationProblem {
 
 		MultiMap modifyMap = new MultiValueMap();
 
-		File modifiedInput = new File(".\\EnergyPLAN161\\spool\\" + fileName + ".txt");
+		File modifiedInput = new File(".\\EnergyPLAN15.1\\spool\\" + fileName + ".txt");
 		if (modifiedInput.exists()) {
 			modifiedInput.delete();
 		}
@@ -136,7 +142,7 @@ public class MaOOAalborg4D extends EnergySystemOptimizationProblem {
 		FileWriter fw = new FileWriter(modifiedInput.getAbsoluteFile());
 		BufferedWriter modifiedInputbw = new BufferedWriter(fw);
 
-		String path = ".\\EnergyPLAN161\\energyPlan Data\\Data\\Aalborg_2050_Plan_A_44%ForOptimization_2objctives.txt";
+		String path = ".\\EnergyPLAN15.1\\energyPlan Data\\Data\\Aalborg_2050_Plan_A_44%ForOptimization_2objctives.txt";
 
 		BufferedReader mainInputbr = new BufferedReader(new InputStreamReader(new FileInputStream(path), "UTF-16"));
 
@@ -166,7 +172,7 @@ public class MaOOAalborg4D extends EnergySystemOptimizationProblem {
 		String modifiedParameters[] = { 
 				"input_cap_chp3_el=", // chp3 (0)
 				"input_cap_hp3_el=", // 1
-				"input_cap_hp3_el=", // 2 wind
+				"input_RES1_capacity=", // 2 wind
 				"input_RES2_capacity=", // 3 offshorewind
 				"input_RES3_capacity=", // 4 //PV
 				
@@ -211,7 +217,7 @@ public class MaOOAalborg4D extends EnergySystemOptimizationProblem {
 	@Override
 	public void extractInformation(Solution solution, MultiMap modifyMap, int serial) throws JMException {
 		
-		EnergyPLANFileParseForAalborg epfp = new EnergyPLANFileParseForAalborg(".\\EnergyPLAN161\\spool\\results\\modifiedInput"+serial+".txt.txt");
+		EnergyPLANFileParseForAalborg epfp = new EnergyPLANFileParseForAalborg(".\\EnergyPLAN15.1\\spool\\results\\modifiedInput"+serial+".txt.txt");
 		energyplanmMap = epfp.parseFile();
 
 		Iterator it;
@@ -230,7 +236,7 @@ public class MaOOAalborg4D extends EnergySystemOptimizationProblem {
 		it = col.iterator();
 		double maximumBoilerGroup3 = Double.parseDouble(it.next().toString());
 		// extracting maximum PP configuration
-		col = (Collection<String>) energyplanmMap.get("Annual MaximumPP2Electr.");
+		col = (Collection<String>) energyplanmMap.get("Annual MaximumPPElectr.");
 		it = col.iterator();
 		double maximumPP = Double.parseDouble(it.next().toString());
 		// if chp>PP, do a 2nd evolution with energyplan where chp=pp
@@ -254,7 +260,7 @@ public class MaOOAalborg4D extends EnergySystemOptimizationProblem {
 
 			try {
 				
-				String energyPLANrunCommand = ".\\EnergyPLAN161\\EnergyPLAN.exe -i "
+				String energyPLANrunCommand = ".\\EnergyPLAN15.1\\EnergyPLAN.exe -i "
 						+ "\"./src/EnergySystems/Aalborg/OptimizeEnergyPLANAalborg/Aalborg_2050_Plan_A_44%ForOptimization_2objctives.txt\" "
 						+ "-m \"modification.txt\" -ascii \"result.txt\" ";
 
@@ -701,6 +707,29 @@ public class MaOOAalborg4D extends EnergySystemOptimizationProblem {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+	@Override 
+public void simulateAllScenarios(int numberOfScenarios) {
+		
+		String runSpoolEnergyPLAN = ".\\EnergyPLAN15.1\\EnergyPLAN.exe -spool "+numberOfScenarios+ "  ";
+		for(int i=0;i<numberOfScenarios;i++) {
+			runSpoolEnergyPLAN = runSpoolEnergyPLAN + "modifiedInput"+i+".txt ";
+		}
+		runSpoolEnergyPLAN = runSpoolEnergyPLAN + "-ascii run";
+		
+			
+		try {
+			Process process = Runtime.getRuntime().exec(runSpoolEnergyPLAN);
+			process.waitFor();
+			process.destroy();
+
+		} catch (IOException e) {
+			System.out.println("Energyplan.exe has some problem");
+			e.printStackTrace();
+		} catch (InterruptedException e) {
+			System.out.println("Energyplan interrupted");
+		}
+		
 	}
 	
 	double calculateForthObective(MultiMap energyplanmMap) {
