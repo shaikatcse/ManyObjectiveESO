@@ -261,7 +261,7 @@ public class MaOOAalborg4D extends EnergySystemOptimizationProblem {
 			try {
 				
 				String energyPLANrunCommand = ".\\EnergyPLAN15.1\\EnergyPLAN.exe -i "
-						+ "\"./src/EnergySystems/Aalborg/OptimizeEnergyPLANAalborg/Aalborg_2050_Plan_A_44%ForOptimization_2objctives.txt\" "
+						+ "\".\\EnergyPLAN15.1\\energyPlan Data\\Data\\Aalborg_2050_Plan_A_44%ForOptimization_2objctives.txt\" "
 						+ "-m \"modification.txt\" -ascii \"result.txt\" ";
 
 				Process process = Runtime.getRuntime().exec(energyPLANrunCommand);
@@ -733,7 +733,7 @@ public void simulateAllScenarios(int numberOfScenarios) {
 	}
 	
 	double calculateForthObective(MultiMap energyplanmMap) {
-		double PEFImport = 2.12; // 1/0.47
+		//double PEFImport = 2.12; // 1/0.47
 		
 		Collection<String> col = (Collection<String>) energyplanmMap.get("Ngas Consumption");
 		Iterator<String> it = col.iterator();
@@ -744,6 +744,17 @@ public void simulateAllScenarios(int numberOfScenarios) {
 		col = (Collection<String>) energyplanmMap.get("AnnualWindElectr.");
 		it = col.iterator();
 		double annualWindEl = Double.parseDouble(it.next().toString());
+		
+		//offshore wind
+		col = (Collection<String>) energyplanmMap.get("AnnualOffshoreElectr.");
+		it = col.iterator();
+		double annualOffShoreWindEl = Double.parseDouble(it.next().toString());
+		
+		//PV
+		col = (Collection<String>) energyplanmMap.get("AnnualPVElectr.");
+		it = col.iterator();
+		double annualPVEl = Double.parseDouble(it.next().toString());
+		
 		//chp
 		col = (Collection<String>) energyplanmMap.get("AnnualCHPElectr.");
 		it = col.iterator();
@@ -754,13 +765,14 @@ public void simulateAllScenarios(int numberOfScenarios) {
 		it = col.iterator();
 		double annualCshpEl = Double.parseDouble(it.next().toString());
 		
-		double localProduction = annualWindEl + annualChpEl + annualCshpEl;
+		double localProduction = annualWindEl +annualOffShoreWindEl + annualPVEl + annualChpEl + annualCshpEl ;
 		
 		col = (Collection<String>) energyplanmMap.get("AnnualExportElectr.");
 		it = col.iterator();
 		double annualExport = Double.parseDouble(it.next().toString());
 		//Export PEF 
-		double PEFExport = annualWindEl*1 + annualChpEl * (1.0/0.25) + annualCshpEl * (1.0/0.54);
+		double PEFLocalProduction = ( annualWindEl*1 + annualOffShoreWindEl*1 + annualPVEl*1 
+				+ annualChpEl * (1.0/0.25) + annualCshpEl * (1.0/0.54))/localProduction;
 		
 		col = (Collection<String>) energyplanmMap.get("Biomass Consumption");
 		it = col.iterator();
@@ -780,7 +792,7 @@ public void simulateAllScenarios(int numberOfScenarios) {
 		double hp3Heat = Double.parseDouble(it.next().toString());
 		double hpHeat = hp2Heat + hp3Heat;
 		
-		double ESD = nGasConsumption/( (localProduction- annualExport) * PEFExport + nGasConsumption + biomassConsumption + wasteConsumption 
+		double ESD = nGasConsumption/( (localProduction- annualExport) * PEFLocalProduction + nGasConsumption + biomassConsumption + wasteConsumption 
 										+ (hpHeat - (hpHeat/3.6) ) );
 		return ESD;
 	}
