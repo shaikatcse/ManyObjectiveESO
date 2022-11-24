@@ -81,7 +81,7 @@ public class MaOOCEIS4DMain {
 
 		
 		for (int algorithmNo = 0; algorithmNo < algorithms.length; algorithmNo++) {
-			int numberOfRun = 2;
+			int numberOfRun = 30;
 			
 			trackBW.write(algorithms[algorithmNo]+"\n");
 			

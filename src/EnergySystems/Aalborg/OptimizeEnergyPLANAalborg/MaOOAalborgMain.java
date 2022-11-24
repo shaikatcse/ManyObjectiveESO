@@ -1,7 +1,9 @@
 package EnergySystems.Aalborg.OptimizeEnergyPLANAalborg;
 
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.util.HashMap;
@@ -12,6 +14,7 @@ import jmetal.core.Operator;
 import jmetal.core.Problem;
 import jmetal.core.Solution;
 import jmetal.core.SolutionSet;
+import jmetal.metaheuristics.AlgorithmFactory;
 import jmetal.metaheuristics.nsgaII.NSGAII;
 import jmetal.operators.crossover.CrossoverFactory;
 import jmetal.operators.selection.SelectionFactory;
@@ -23,6 +26,7 @@ import jmetal.util.RandomGenerator;
 import jmetal.operators.mutation.MutationFactory;
 
 import EnergySystems.Aalborg.OptimizeEnergyPLANAalborg.problem.*;
+import EnergySystems.GiudicarieEsteriori.Problem.MaOOCEIS4D;
 
 import java.util.logging.FileHandler;
 import java.util.logging.Logger;
@@ -50,125 +54,118 @@ public class MaOOAalborgMain {
 
 		QualityIndicator indicators; // Object to get quality indicators
 
-		// seed for NSGAii
-		// long seed [] = {545782, 455875, 547945, 458478, 981354, 652262,
-		// 562366, 365652, 456545, 549235 };
-		// seed for spea2
-		// long seed[]={102354,986587,456987,159753,
-		// 216557,589632,471259,523486,4158963,745896};
+		String[] algorithms = {"NSGAII"/*, "SPEA2", "MOEAD"*/};
+		String baseDirectory = ".\\Results\\MaOOAalborg4D\\Constrained\\";
+		File baseDirectoryfile = new File(baseDirectory);
+		baseDirectoryfile.mkdirs();
+		
+		File track = new File(baseDirectory + "\\track.txt");
+		BufferedWriter trackBW = new BufferedWriter(new FileWriter(track.getAbsoluteFile()));
+		track.createNewFile();
 
-		int numberOfRun = 1;
-		for (int i = 0; i < numberOfRun; i++) {
-
-			// PseudoRandom.setRandomGenerator(new RandomGenerator(seed[i]));
-
-			indicators = null;
-
-			//problems for 2 objectives
-			problem=new MaOOAalborg4D("Real");
+		
+		for (int algorithmNo = 0; algorithmNo < algorithms.length; algorithmNo++) {
+			int numberOfRun = 2;
 			
-			//problem for 3 objectives
-			//problem = new EnergyPLANProblemAalborg("Real");
+			trackBW.write(algorithms[algorithmNo]+"\n");
+			
+			
+			String folder = baseDirectory + algorithms[algorithmNo];
+			File file = new File(folder);
+			boolean b = file.mkdirs();
 
-			algorithm = new NSGAII(problem);
-			// algorithm = new SPEA2ForDK(problem, seed[i],
-			// "SPEA2_SBX_PolynomialMutation");
+			for (int i = 0; i < numberOfRun; i++) {
 
-			// indicators = new QualityIndicator(problem,
-			// "C:\\Users\\Nusrat\\Documents\\GitHub\\EnergyPLANDomainKnowledgeEAStep1\\Results\\truePf\\mergefun.pf")
-			// ;
+				trackBW.write(i+"\t");
+				
+				// PseudoRandom.setRandomGenerator(new
+				// RandomGenerator(seed[i]));
 
-			// Algorithm parameters
-			algorithm.setInputParameter("populationSize", 10);
-			algorithm.setInputParameter("maxEvaluations", 150);
-			// for spea2
-			// algorithm.setInputParameter("archiveSize",100);
+				indicators = null;
 
-			// Mutation and Crossover for Real codification
-			parameters = new HashMap();
-			parameters.put("probability", 0.9);
-			parameters.put("distributionIndex", 20.0);
-			crossover = CrossoverFactory.getCrossoverOperator("SBXCrossover",
-					parameters);
+				// problems for 2 objectives
+				problem = new MaOOAalborg4D("Real");
+				
+				parameters = new HashMap();
+				parameters.put("Problem", problem); 
 
-			parameters = new HashMap();
-			parameters.put("probability", 1.0 / problem.getNumberOfVariables());
-			parameters.put("distributionIndex", 20.0);
-			mutation = MutationFactory.getMutationOperator(
-					"PolynomialMutation", parameters);
-			// parameters.put("maximum generation", (int)
-			// algorithm.getInputParameter("maxEvaluations")/(int)
-			// algorithm.getInputParameter("populationSize")-1);
+				algorithm = AlgorithmFactory.getAlgorithm(algorithms[algorithmNo], parameters); 
+				//algorithm.setInputParameter("folder", folder);
 
-			// mutation =
-			// MutationFactory.getMutationOperator("GeneralModifiedPolynomialMutationForRes",
-			// parameters);
+				/*// Algorithm parameters
+				int populationSize = 5;
+				int maxEvaluations = 10;
+				algorithm.setInputParameter("populationSize", populationSize);
+				algorithm.setInputParameter("maxEvaluations", maxEvaluations);
 
-			// Selection Operator
-			parameters = null;
-			selection = SelectionFactory.getSelectionOperator(
-					"BinaryTournament", parameters);
+				// for spea2
+				// algorithm.setInputParameter("archiveSize",150);
 
-			// Add the operators to the algorithm
-			algorithm.addOperator("crossover", crossover);
-			algorithm.addOperator("mutation", mutation);
-			algorithm.addOperator("selection", selection);
+				// Mutation and Crossover for Real codification
+				parameters = new HashMap();
+				parameters.put("probability", 0.9);
+				parameters.put("distributionIndex", 10.0);
+				crossover = CrossoverFactory.getCrossoverOperator("SBXCrossover", parameters);
 
-			// Add the indicator object to the algorithm
-			algorithm.setInputParameter("indicators", indicators);
+				parameters = new HashMap();
+				parameters.put("probability", 1.0 / problem.getNumberOfVariables());
+				parameters.put("distributionIndex", 10.0);
 
-			// Execute the Algorithm
-			long initTime = System.currentTimeMillis();
-			 SolutionSet population = algorithm.execute();
-			/*SolutionSet population = new SolutionSet() {
-				@Override
-				public void printVariablesToFile(String path) {
-					try {
-						FileOutputStream fos = new FileOutputStream(path);
-						OutputStreamWriter osw = new OutputStreamWriter(fos);
-						BufferedWriter bw = new BufferedWriter(osw);
+				mutation = new PolynomialMutation(parameters);
 
-						if (size() > 0) {
-							int numberOfVariables = solutionsList_.get(0)
-									.getDecisionVariables().length;
-							for (Solution aSolutionsList_ : solutionsList_) {
-								for (int j = 0; j < numberOfVariables; j++) {
-									if (j == 6) {
-										//decision variable is heat storage for group 3
-										//round to two decimal place
-										double a = (double) Math.round((aSolutionsList_
-												.getDecisionVariables()[j]
-												.getValue()*100)/100);
-										bw.write(a + " ");
-									} else {
-										double a = Math.round(aSolutionsList_
-												.getDecisionVariables()[j]
-												.getValue());
-										bw.write(a + " ");
-									}
-								}
-								bw.newLine();
-							}
+				// Selection Operator
+				parameters = null;
+				selection = SelectionFactory.getSelectionOperator("BinaryTournament", parameters);
+
+				// Add the operators to the algorithm
+				algorithm.addOperator("crossover", crossover);
+				algorithm.addOperator("mutation", mutation);
+				algorithm.addOperator("selection", selection);
+
+				// Add the indicator object to the algorithm
+				algorithm.setInputParameter("indicators", indicators);*/
+
+				// Execute the Algorithm
+				long initTime = System.currentTimeMillis();
+				SolutionSet population = algorithm.execute();
+
+				long estimatedTime = System.currentTimeMillis() - initTime;
+
+			/*	ExtractEnergyPLANParametersTrentoProvinceV10 ex = new ExtractEnergyPLANParametersTrentoProvinceV10(
+						simulatedYear[year]);
+				for (int z = 0; z < population.size(); z++) {
+					Solution solution = population.get(z);
+					
+					if (solution.getOverallConstraintViolation() >= 0) {
+						String line = "";
+						for (int j = 0; j < solution.numberOfVariables(); j++) {
+							line = line + " " + solution.getDecisionVariables()[i];
 						}
-						bw.close();
-					} catch (IOException | JMException e) {
-						Configuration.logger_
-								.severe("Error acceding to the file");
-						e.printStackTrace();
+						MultiMap energyplanmMapForSimulation;
+						
+						energyplanmMapForSimulation = ex.simulateEnergyPLAN(line);
+						try {
+							ex.WriteEnergyPLANParametersToFile(energyplanmMapForSimulation, folder);
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+						
 					}
-				} // printVariablesToFile
-			};
-			population =  algorithm.execute();*/
-			long estimatedTime = System.currentTimeMillis() - initTime;
-
-			// Result messages
-			logger_.info("Total execution time: " + estimatedTime + "ms");
-			logger_.info("Variables values have been writen to file VAR");
-			//population.printVariablesToFile("AalborgNewResults\\VAR" + i);
-			population.printFeasibleVAR("VAR" + i);
-			logger_.info("Objectives values have been writen to file FUN");
-			//population.printObjectivesToFile("AalborgNewResults\\FUN" + i);
-			population.printFeasibleFUN("FUN" + i);
+				}*/
+				
+				
+				
+				// Result messages
+				logger_.info("Total execution time: " + estimatedTime + "ms");
+				logger_.info("Variables values have been writen to file VAR");
+				population.printFeasibleVAR(folder + "\\VAR"+i );
+				// population.printFeasibleVAR("VAR");
+				logger_.info("Objectives values have been writen to file FUN");
+				population.printFeasibleFUN(folder + "\\FUN"+i );
+				// population.printFeasibleFUN("FUN");
+				trackBW.write("\n");
+			}
 		}
 	}
 }

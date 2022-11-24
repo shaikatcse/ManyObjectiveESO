@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="windows-1252" standalone="no"?>
+<!DOCTYPE log SYSTEM "logger.dtd">
+<log>
+<record>
+  <date>2022-11-24T20:04:02.860559100Z</date>
+  <millis>1669320242860</millis>
+  <nanos>559100</nanos>
+  <sequence>0</sequence>
+  <logger>jMetal</logger>
+  <level>INFO</level>
+  <class>EnergySystems.Aalborg.OptimizeEnergyPLANAalborg.MaOOAalborgMain</class>
+  <method>main</method>
+  <thread>1</thread>
+  <message>Total execution time: 672520ms</message>
+</record>
+<record>
+  <date>2022-11-24T20:04:03.108125400Z</date>
+  <millis>1669320243108</millis>
+  <nanos>125400</nanos>
+  <sequence>1</sequence>
+  <logger>jMetal</logger>
+  <level>INFO</level>
+  <class>EnergySystems.Aalborg.OptimizeEnergyPLANAalborg.MaOOAalborgMain</class>
+  <method>main</method>
+  <thread>1</thread>
+  <message>Variables values have been writen to file VAR</message>
+</record>
+<record>
+  <date>2022-11-24T20:04:03.112331200Z</date>
+  <millis>1669320243112</millis>
+  <nanos>331200</nanos>
+  <sequence>2</sequence>
+  <logger>jMetal</logger>
+  <level>INFO</level>
+  <class>EnergySystems.Aalborg.OptimizeEnergyPLANAalborg.MaOOAalborgMain</class>
+  <method>main</method>
+  <thread>1</thread>
+  <message>Objectives values have been writen to file FUN</message>
+</record>
+<record>
+  <date>2022-11-24T20:15:31.508428400Z</date>
+  <millis>1669320931508</millis>
+  <nanos>428400</nanos>
+  <sequence>3</sequence>
+  <logger>jMetal</logger>
+  <level>INFO</level>
+  <class>EnergySystems.Aalborg.OptimizeEnergyPLANAalborg.MaOOAalborgMain</class>
+  <method>main</method>
+  <thread>1</thread>
+  <message>Total execution time: 688390ms</message>
+</record>
+<record>
+  <date>2022-11-24T20:15:31.511801500Z</date>
+  <millis>1669320931511</millis>
+  <nanos>801500</nanos>
+  <sequence>4</sequence>
+  <logger>jMetal</logger>
+  <level>INFO</level>
+  <class>EnergySystems.Aalborg.OptimizeEnergyPLANAalborg.MaOOAalborgMain</class>
+  <method>main</method>
+  <thread>1</thread>
+  <message>Variables values have been writen to file VAR</message>
+</record>
+<record>
+  <date>2022-11-24T20:15:31.520472600Z</date>
+  <millis>1669320931520</millis>
+  <nanos>472600</nanos>
+  <sequence>5</sequence>
+  <logger>jMetal</logger>
+  <level>INFO</level>
+  <class>EnergySystems.Aalborg.OptimizeEnergyPLANAalborg.MaOOAalborgMain</class>
+  <method>main</method>
+  <thread>1</thread>
+  <message>Objectives values have been writen to file FUN</message>
+</record>
+</log>
