@@ -107,7 +107,7 @@ public class cMOEADEA15_Configurations  {
     HashMap  parameters ; // Operator parameters
 
     // Creating the problem
-    algorithm = new cMOEADEA15(problem);
+    algorithm = new cMOEADEA(problem);
 
     // Algorithm parameters
     algorithm.setInputParameter("populationSize", populationSize_);
